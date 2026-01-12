@@ -2,6 +2,13 @@
 
 <h4>(2025-12-17)</h4>
 <ul>
+  <li>📊 Daily Progress Bar now works in subdecks — the overview bar automatically uses the nearest parent deck with a deadline</li>
+  <li>📅 Finish new cards before date — you can now choose a cutoff date with a calendar instead of only using “days before deadline”</li>
+</ul>
+<hr>
+
+<h4>(2025-12-17)</h4>
+<ul>
   <li>⏱️ Time estimate multiplier — new optional setting to scale the time estimate in the daily message (e.g. <code>1.5×</code> turns <i>23 min</i> into <i>~35 min</i>)</li>
 </ul>
 <hr>
