@@ -1,6 +1,6 @@
 <h3>🚀 Changelog</h3>
 
-<h4>(2025-12-17)</h4>
+<h4>(2026-1-12)</h4>
 <ul>
   <li>📊 Daily Progress Bar now works in subdecks — the overview bar automatically uses the nearest parent deck with a deadline</li>
   <li>📅 Finish new cards before date — you can now choose a cutoff date with a calendar instead of only using “days before deadline”</li>
