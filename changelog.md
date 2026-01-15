@@ -5,6 +5,7 @@
   <li>🛠️ Settings UI improved — cleaner, more compact layout with neatly aligned fields across 3 tabs (Deadline / Feedback / Vacation)</li>
   <li>📈 Daily progress logic updated — daily reviews now count distinct cards (not revlog actions), and new cards started today can be compared for more accurate “on target” progress</li>
 </ul>
+<hr>
 
 <h4>(2026-1-12)</h4>
 <ul>
