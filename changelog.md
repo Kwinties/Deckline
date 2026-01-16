@@ -1,5 +1,13 @@
 <h3>🚀 Changelog</h3>
 
+<h4>(2026-1-17)</h4>
+<ul>
+  <li>📊 Review progress bar added — a compact progress bar is now shown at the bottom of the Review screen while you’re studying :contentReference[oaicite:0]{index=0}</li>
+  <li>✅ Deadline “Total progress” bug fixed — progress calculation now correctly respects the expected-total denominator during the New-cards phase :contentReference[oaicite:1]{index=1}</li>
+  <li>🧹 Small bug fixes — minor stability + UI polish improvements across Deckline :contentReference[oaicite:2]{index=2}</li>
+</ul>
+<hr>
+
 <h4>(2026-1-15)</h4>
 <ul>
   <li>🛠️ Settings UI improved — cleaner, more compact layout with neatly aligned fields across 3 tabs (Deadline / Feedback / Vacation)</li>
