@@ -1,5 +1,16 @@
 <h3>🚀 Changelog</h3>
 
+<h4>(2026-1-23)</h4>
+<ul>
+  <li>🧮 Pending number improved — the <b>Pending</b> counter now also counts down correctly during the <i>New → Young</i> phase</li>
+  <li>🎨 Bar color customization — new option to change the progress bar color (Auto / Solid / Gradient)</li>
+  <li>🧼 Deckline settings restyle — settings UI has been restyled for a cleaner, more compact look and better visual consistency</li>
+  <li>🧠 New → Young clarity — improved labels and tooltips so it’s clearer what happens in the <i>New → Young</i> phase</li>
+  <li>✅ Daily progress logic change — only <b>new cards learned today</b> now count toward <b>Daily Reviews</b> (instead of distinct cards)</li>
+</ul>
+<hr>
+
+
 <h4>(2026-1-17)</h4>
 <ul>
   <li>📊 Review progress bar added — a compact progress bar is now shown at the bottom of the Review screen while studying</li>
