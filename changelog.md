@@ -1,5 +1,13 @@
 <h3>🚀 Changelog</h3>
 
+<h4>(2026-1-24)</h4>
+<ul>
+  <li>🛠️ Review progress bar bugfix — the review progress bar no longer appears briefly on app startup when it’s disabled</li>
+  <li>🧩 Subdeck stability fix — resolved an issue where clicking certain subdecks could cause the Deck Overview to fail on some Anki versions</li>
+  <li>🛡️ Crash-safe overview rendering — Deckline now fails gracefully if an unexpected edge case occurs, preventing broken deck overviews</li>
+</ul>
+<hr>
+
 <h4>(2026-1-23)</h4>
 <ul>
   <li>🧮 Pending number improved — the <b>Pending</b> counter now also counts down correctly during the <i>New → Young</i> phase</li>
