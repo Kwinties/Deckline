@@ -1,5 +1,14 @@
 <h3>🚀 Changelog</h3>
 
+<h4>(2026-1-26)</h4>
+<ul>
+  <li>🎯 Daily target override refined — after the cutoff, daily targets are now calculated as <i>(young cards per remaining day) + all remaining new cards</i>, giving a more realistic workload when new cards spill into the final phase</li>
+  <li>⚠️ Cutoff warning restored — the daily message once again clearly warns (in red, with an icon) when you still have <i>new cards left</i> after entering the <i>Young → Mature</i> phase</li>
+  <li>🖱️ Clickable Deck link crash fixed — hopefully resolved an issue where clicking a deck name from the Deckline table could crash Anki on some systems</li>
+</ul>
+<hr>
+
+
 <h4>(2026-1-24)</h4>
 <ul>
   <li>🛠️ Review progress bar bugfix — the review progress bar no longer appears briefly on app startup when it’s disabled</li>
