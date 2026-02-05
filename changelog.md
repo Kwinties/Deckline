@@ -1,5 +1,14 @@
 <h3>🚀 Changelog</h3>
 
+<h4>(2026-02-06)</h4>
+<ul>
+  <li>🎉 Celebration setting added — optional celebration animation when you reach 100% of today’s target in the review screen</li>
+  <li>✨ Cleaner Deckline UI — refreshed <b>Tempo</b> indicator and <b>Total Progress</b> display for better alignment, spacing, and visual consistency</li>
+  <li>📍 Improved overview placement — the Deckline table and total progress bar now appear in a more natural, less intrusive position on the main Deck Overview screen</li>
+</ul>
+<hr>
+
+
 <h4>(2026-1-26)</h4>
 <ul>
   <li>🎯 Daily target override refined — after the cutoff, daily targets have a better calculation method</li>
