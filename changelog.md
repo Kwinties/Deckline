@@ -4,7 +4,7 @@
 <ul>
   <li>🎉 Celebration setting added — optional celebration animation when you reach 100% of today’s target in the review screen</li>
   <li>✨ Cleaner Deckline UI — refreshed <b>Tempo</b> indicator and <b>Total Progress</b> display for better alignment, spacing, and visual consistency</li>
-  <li>📍 Improved overview placement — the Deckline table and total progress bar now appear in a more natural, less intrusive position on the main Deck Overview screen</li>
+  <li>📍 Improved overview placement — the Deckline table now appears in a more natural position on the main screen</li>
 </ul>
 <hr>
 
