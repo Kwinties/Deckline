@@ -1,4 +1,17 @@
-<h3>🚀 Changelog</h3>
+<h2>🚀 Changelog</h2>
+
+<h3>Deckline v1.0</h3>
+<h4>(2026-02-15)</h4>
+<ul>
+  <li>🆕 Deck Browser redesign — Deckline is now shown as <b>clean cards</b> instead of a table for faster scanning and a more modern look</li>
+  <li>🎛️ New topbar controls — <b>Focus</b>, <b>Sort</b> and quick filters to instantly find the decks that matter most</li>
+  <li>🟢🔴 Better status feedback — clearer <b>On track</b> / <b>Behind</b> / <b>Pending</b> indicators with improved badges and visuals</li>
+  <li>📊 Premium: Stats dashboard — new <b>7-day Stats</b> window showing done vs target (per deck + “All deadlines” total)</li>
+  <li>💎 Premium: Motivation & control — <b>Unlimited deadlines</b>, <b>Vacation days</b> (auto-adjust daily targets), <b>custom progress colors</b>, and <b>celebration</b> when hitting 100%</li>
+  <li>🧠 UX polish — cleaner spacing/typography and improved clarity for <b>Phase 1 (NEW)</b> vs <b>Phase 2 (REVIEW)</b></li>
+</ul>
+<hr>
+
 
 <h4>(2026-02-06)</h4>
 <ul>
