@@ -137,7 +137,6 @@ class DeadlineDb:
         self.db.setdefault("time_multiplier", legacy_mult)
         self.db.setdefault("time_multiplier_new", legacy_mult)
         self.db.setdefault("time_multiplier_review", legacy_mult)
-
         # Shared progress fill style for both bars
         self.db.setdefault(
             "progress_fill",
@@ -213,15 +212,6 @@ class DeadlineDb:
     def time_multiplier(self) -> float:
         # Backwards compatibility alias.
         try:
-            v = float(self.db.get("time_multiplier_review", self.db.get("time_multiplier", 1.0)) or 1.0)
-        except Exception:
-            v = 1.0
-        return max(0.1, min(v, 10.0))
-
-    @time_multiplier.setter
-    def time_multiplier(self, v: float) -> None:
-        # Backwards compatibility alias.
-        try:
             vf = float(v)
         except Exception:
             vf = 1.0
@@ -247,6 +237,14 @@ class DeadlineDb:
 
     @property
     def time_multiplier_review(self) -> float:
+        try:
+            v = float(self.db.get("time_multiplier_review", self.db.get("time_multiplier", 1.0)) or 1.0)
+        except Exception:
+            v = 1.0
+        return max(0.1, min(v, 10.0))
+
+    @time_multiplier_review.setter
+    def time_multiplier_review(self, v: float) -> None:
         try:
             v = float(self.db.get("time_multiplier_review", self.db.get("time_multiplier", 1.0)) or 1.0)
         except Exception:
