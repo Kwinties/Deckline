@@ -379,12 +379,20 @@ def _update_bar() -> None:
         remaining_days = max(_count_study_days(start_count, stats.deadline, skip_weekends, skip_dates), 1)
         hint = f"young + new • deadline {stats.deadline.strftime('%d-%m-%Y')}"
 
+    # ✅ ADD THIS: Define 'new' variable
+    new = int(getattr(stats, "new", 0) or 0)
+
     done_today = done_today_for_target(stats) or 0
 
     quota_raw = _quota_today_constant(remaining_effective, remaining_days, done_today)
     quota_today = quota_raw
     if expected_total > 0:
         quota_today = min(quota_today, max(0, remaining_now + done_today))
+
+    # ✅ Include remaining NEW cards in Phase 2 target
+    if not learning_phase:
+        quota_today = int(quota_today) + int(new or 0)
+
     if today_is_skip:
         quota_today = 0
 
@@ -476,6 +484,11 @@ def setup() -> None:
     gui_hooks.reviewer_did_show_question.append(_on_reviewer_show_question)
     gui_hooks.reviewer_did_show_answer.append(_on_reviewer_show_answer)
     gui_hooks.reviewer_will_end.append(_on_reviewer_will_end)
+
+    # ✅ ADD THIS: Hide bar when deck browser shows
+    def _on_deck_browser_will_show(*args):
+        _hide()
+    gui_hooks.deck_browser_will_render_content.append(_on_deck_browser_will_show)
 
     try:
         db = DeadlineDb()

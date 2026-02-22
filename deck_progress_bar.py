@@ -128,7 +128,7 @@ def inject_deadline_progress_bar(overview: Overview) -> None:
           )
           existing_now = int(getattr(stats, "mature", 0) or 0) + int(getattr(stats, "young", 0) or 0) + int(getattr(stats, "new", 0) or 0)
           planning_active = (expected_total > 0) and (existing_now < expected_total)
-  
+
           hint = (
               f"NEW (planned) • cutoff {cutoff_date.strftime('%d-%m-%Y')}"
               if planning_active
@@ -144,17 +144,22 @@ def inject_deadline_progress_bar(overview: Overview) -> None:
           )
           hint = f"REVIEW • deadline {stats.deadline.strftime('%d-%m-%Y')}"
 
+      # ✅ Define 'new' variable BEFORE using it
+      new = int(getattr(stats, "new", 0) or 0)
 
-  
       # 2) Today's progress (MUST be before quota_today)
       done_today = done_today_for_target(stats) or 0
-  
+
       # 3) Target today (constant during the day)
       quota_raw = _quota_today_constant(remaining_effective, remaining_days, done_today)
       quota_today = quota_raw
       if expected_total > 0:
           quota_today = min(quota_today, max(0, remaining_now + done_today))
-  
+
+      # ✅ Include remaining NEW cards in Phase 2 target
+      if not learning_phase:
+          quota_today = int(quota_today) + int(new or 0)
+
       if today_is_skip:
           quota_today = 0
 

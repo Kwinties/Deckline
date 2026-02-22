@@ -114,9 +114,9 @@ def _render_card(
 ) -> str:
     db = DeadlineDb()
 
-    # ✅ Streak pill (minimal, left of tempo)
+    # ✅ Streak pill (minimal, left of tempo) - only show if streak > 0
     show_streaks = bool(getattr(db, "enable_streaks", False))
-    if show_streaks:
+    if show_streaks and int(streak_days or 0) > 0:
         streak_html = (
             "<span "
             "title='Daily target streak' "
@@ -124,7 +124,8 @@ def _render_card(
             "margin-right:10px;padding:2px 8px;border-radius:999px;"
             "font-size:12px;font-weight:750;letter-spacing:.2px;"
             "background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);"
-            "color:rgba(255,206,120,0.92);\""
+            "color:rgba(255,206,120,0.92);"
+            "vertical-align:middle;\""  # ← ADD THIS
             f">🔥 {int(streak_days or 0)}</span>"
         )
     else:
@@ -227,7 +228,7 @@ def _render_card(
             m = mins % 60
 
             if h > 0:
-                t = f"{h}h {m:02d}m/day" if m else f"{h}h/day"
+                t = f"{h}h {m:02d}m" if m else f"{h}h"
             else:
                 t = f"{m}m"
 

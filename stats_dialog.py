@@ -746,29 +746,50 @@ class DecklineStatsDialog(QDialog):
     def _render(self) -> None:
         did = int(self.deckBox.currentData() or -1)
 
+        # ✅ Calculate streaks per deck
         # ----------------------------
-        # ✅ Total streaks across ALL decks
-        # (active decks + total streak days)
-        # ----------------------------
-        active_decks = 0
-        total_days = 0
+        streaks_by_deck = {}
         try:
-            for x in (self._deck_ids or []):
-                entries_x = get_daily_log_entries(int(x))
-                s = int(calculate_current_streak(entries_x) or 0)
-                if s > 0:
-                    active_decks += 1
-                    total_days += s
+            for deck_id in (self._deck_ids or []):
+                try:
+                    entries = get_daily_log_entries(int(deck_id))
+                    streak_count = int(calculate_current_streak(entries) or 0)
+                    if streak_count > 0:
+                        streaks_by_deck[int(deck_id)] = streak_count
+                except Exception:
+                    continue
         except Exception:
-            active_decks = 0
-            total_days = 0
-
+            streaks_by_deck = {}
+        
+        # Build display text based on current deck selection
         if hasattr(self, "totalStreakLabel"):
-            if total_days > 0:
-                self.totalStreakLabel.setText(f"🔥 {active_decks} active · {total_days} days")
+            did = int(self.deckBox.currentData() or -1)
+            
+            if did == -1:
+                # ALL DEADLINES (sum) mode: show how many decks + highest streak
+                active_count = len(streaks_by_deck)
+                if active_count > 0:
+                    max_streak = max(streaks_by_deck.values())
+                    
+                    # Display: "2 decks • Highest = 2"
+                    self.totalStreakLabel.setText(f"🔥 {active_count} • 🏆 {max_streak}")
+                    self.totalStreakLabel.setToolTip(f"{active_count} decks have active streaks\nHighest streak: {max_streak} days")
+                else:
+                    self.totalStreakLabel.setText("")
+                    self.totalStreakLabel.setToolTip("")
             else:
-                self.totalStreakLabel.setText("")
-
+                # Single deck mode: show THAT deck's streak
+                streak = streaks_by_deck.get(did, 0)
+                if streak > 0:
+                    try:
+                        deck_name = mw.col.decks.name(did)
+                    except Exception:
+                        deck_name = f"Deck {did}"
+                    self.totalStreakLabel.setText(f"🔥 {streak} days")
+                    self.totalStreakLabel.setToolTip(f"Current streak for {deck_name}")
+                else:
+                    self.totalStreakLabel.setText("")
+                    self.totalStreakLabel.setToolTip("")
         # ----------------------------
         # Chart data
         # ----------------------------
