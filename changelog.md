@@ -1,5 +1,14 @@
 <h2>🚀 Changelog</h2>
 
+<h3>Deckline v1.1</h3>
+<h4>(2026-02-22)</h4>
+<ul>
+  <li>🔥 Streaks release fix — <b>Enable streaks</b> now saves correctly in Settings for Premium users</li>
+  <li>🧼 Release cleanup — removed temporary <b>DEV: Reset to Free</b> button from the Premium tab</li>
+  <li>✅ v1.1 stability pass — readying the streaks update for release packaging</li>
+</ul>
+<hr>
+
 <h3>Deckline v1.0</h3>
 <h4>(2026-02-15)</h4>
 <ul>
