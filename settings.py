@@ -556,15 +556,25 @@ class DeadlinerDialog(QDialog):
         self.reviewProgressCheckbox = _bool_box(getattr(self.db, "show_review_progress", True))
         basic_form.addRow("Show daily progress bar in review screen:", self.reviewProgressCheckbox)
     
-        self.timeMultiplierSpin = MultiplierSpinBox()
-        self.timeMultiplierSpin.setMultiplier(float(getattr(self.db, "time_multiplier", 1.0) or 1.0))
-        self.timeMultiplierSpin.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.timeMultiplierSpin.setToolTip(
-            "Scales the time estimate shown in progress bars.\n"
-            "Example: 2.00× means time is shown as double."
+        self.timeMultiplierNewSpin = MultiplierSpinBox()
+        self.timeMultiplierNewSpin.setMultiplier(float(getattr(self.db, "time_multiplier_new", 1.0) or 1.0))
+        self.timeMultiplierNewSpin.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.timeMultiplierNewSpin.setToolTip(
+            "Scales the time estimate shown in progress bars during NEW phase.\n"
+            "Example: 0.80× means time is shown 20% lower."
         )
-        self.timeMultiplierSpin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
-        basic_form.addRow("Time estimate multiplier:", self.timeMultiplierSpin)
+        self.timeMultiplierNewSpin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
+        basic_form.addRow("Time estimate multiplier (new cards):", self.timeMultiplierNewSpin)
+
+        self.timeMultiplierReviewSpin = MultiplierSpinBox()
+        self.timeMultiplierReviewSpin.setMultiplier(float(getattr(self.db, "time_multiplier_review", 1.0) or 1.0))
+        self.timeMultiplierReviewSpin.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.timeMultiplierReviewSpin.setToolTip(
+            "Scales the time estimate shown in progress bars during REVIEW phase.\n"
+            "Example: 1.20× means time is shown 20% higher."
+        )
+        self.timeMultiplierReviewSpin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
+        basic_form.addRow("Time estimate multiplier (reviews):", self.timeMultiplierReviewSpin)
     
         outer.addWidget(basicGroup)
     
@@ -1248,8 +1258,11 @@ class DeadlinerDialog(QDialog):
                 }
 
     
-            if getattr(self, "timeMultiplierSpin", None):
-                self.db.time_multiplier = float(self.timeMultiplierSpin.multiplier())
+            if getattr(self, "timeMultiplierNewSpin", None):
+                self.db.time_multiplier_new = float(self.timeMultiplierNewSpin.multiplier())
+
+            if getattr(self, "timeMultiplierReviewSpin", None):
+                self.db.time_multiplier_review = float(self.timeMultiplierReviewSpin.multiplier())
     
             # --- If NOT global mode → save per-deck deadline ---
             if not self._global_mode:

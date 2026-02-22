@@ -153,7 +153,8 @@
 <ul>
   <li><b>Show daily progress bar in deck overview</b></li>
   <li><b>Show daily progress bar in review screen</b></li>
-  <li><b>Time estimate multiplier</b> — only affects displayed time estimates.</li>
+  <li><b>Time estimate multiplier (new cards)</b> — used during NEW phase only.</li>
+  <li><b>Time estimate multiplier (reviews)</b> — used during REVIEW phase only.</li>
 </ul>
 
 <p><b>Premium visuals (Premium):</b></p>
