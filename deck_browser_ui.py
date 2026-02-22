@@ -214,7 +214,12 @@ def _render_card(
     time_html = ""
     if bool(getattr(dl, "hasEstimate", False)) and (not bool(getattr(dl, "hide_target", False))):
         hours_per_day = float(getattr(dl, "todoTime", 0.0) or 0.0)
-        mult = float(getattr(db, "time_multiplier", 1.0) or 1.0)
+        is_new_phase = bool(getattr(dl, "new", 0) or 0) > 0
+        mult = float(
+            getattr(db, "time_multiplier_new", 1.0)
+            if is_new_phase
+            else getattr(db, "time_multiplier_review", 1.0)
+        )
 
         mins = int(round(hours_per_day * 60.0 * mult))
         if mins > 0:
@@ -226,10 +231,11 @@ def _render_card(
             else:
                 t = f"{m}m"
 
+            phase_txt = "new cards" if is_new_phase else "reviews"
             tooltip = (
                 "Estimated time needed per day.\n"
                 "Based on your recent average review speed in this deck.\n"
-                f"Multiplier: {mult:.2f}×"
+                f"Phase: {phase_txt}. Multiplier: {mult:.2f}×"
             )
 
             time_html = (
@@ -664,7 +670,12 @@ def display_footer(deck_browser, content) -> None:
         mins_today_est = 0
         if bool(getattr(dl, "hasEstimate", False)) and (not bool(getattr(dl, "hide_target", False))):
             hours_per_day = float(getattr(dl, "todoTime", 0.0) or 0.0)
-            mult = float(getattr(db, "time_multiplier", 1.0) or 1.0)
+            is_new_phase = bool(getattr(dl, "new", 0) or 0) > 0
+            mult = float(
+                getattr(db, "time_multiplier_new", 1.0)
+                if is_new_phase
+                else getattr(db, "time_multiplier_review", 1.0)
+            )
             mins_today_est = int(round(hours_per_day * 60.0 * mult))
             if mins_today_est < 0:
                 mins_today_est = 0

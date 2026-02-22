@@ -126,7 +126,17 @@ class DeadlineDb:
         self.db.setdefault("show_review_progress", True)
         # Celebration (rainbow) when hitting 100% in reviewer
         self.db.setdefault("show_celebration", True)
-        self.db.setdefault("time_multiplier", 1.0)
+
+        # Time estimates: keep legacy key, but store separate multipliers per phase.
+        try:
+            legacy_mult = float(self.db.get("time_multiplier", 1.0) or 1.0)
+        except Exception:
+            legacy_mult = 1.0
+        legacy_mult = max(0.1, min(legacy_mult, 10.0))
+
+        self.db.setdefault("time_multiplier", legacy_mult)
+        self.db.setdefault("time_multiplier_new", legacy_mult)
+        self.db.setdefault("time_multiplier_review", legacy_mult)
 
         # Shared progress fill style for both bars
         self.db.setdefault(
@@ -201,19 +211,58 @@ class DeadlineDb:
 
     @property
     def time_multiplier(self) -> float:
+        # Backwards compatibility alias.
         try:
-            v = float(self.db.get("time_multiplier", 1.0) or 1.0)
+            v = float(self.db.get("time_multiplier_review", self.db.get("time_multiplier", 1.0)) or 1.0)
         except Exception:
             v = 1.0
         return max(0.1, min(v, 10.0))
 
     @time_multiplier.setter
     def time_multiplier(self, v: float) -> None:
+        # Backwards compatibility alias.
         try:
             vf = float(v)
         except Exception:
             vf = 1.0
-        self.db["time_multiplier"] = max(0.1, min(vf, 10.0))
+        clamped = max(0.1, min(vf, 10.0))
+        self.db["time_multiplier"] = clamped
+        self.db["time_multiplier_review"] = clamped
+
+    @property
+    def time_multiplier_new(self) -> float:
+        try:
+            v = float(self.db.get("time_multiplier_new", self.db.get("time_multiplier", 1.0)) or 1.0)
+        except Exception:
+            v = 1.0
+        return max(0.1, min(v, 10.0))
+
+    @time_multiplier_new.setter
+    def time_multiplier_new(self, v: float) -> None:
+        try:
+            vf = float(v)
+        except Exception:
+            vf = 1.0
+        self.db["time_multiplier_new"] = max(0.1, min(vf, 10.0))
+
+    @property
+    def time_multiplier_review(self) -> float:
+        try:
+            v = float(self.db.get("time_multiplier_review", self.db.get("time_multiplier", 1.0)) or 1.0)
+        except Exception:
+            v = 1.0
+        return max(0.1, min(v, 10.0))
+
+    @time_multiplier_review.setter
+    def time_multiplier_review(self, v: float) -> None:
+        try:
+            vf = float(v)
+        except Exception:
+            vf = 1.0
+        clamped = max(0.1, min(vf, 10.0))
+        self.db["time_multiplier_review"] = clamped
+        # Keep legacy key in sync for older code paths.
+        self.db["time_multiplier"] = clamped
     
     @property
     def is_premium(self) -> bool:
