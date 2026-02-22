@@ -3,9 +3,8 @@
 <h3>Deckline v1.1</h3>
 <h4>(2026-02-22)</h4>
 <ul>
-  <li>🔥 Streaks release fix — <b>Enable streaks</b> now saves correctly in Settings for Premium users</li>
-  <li>🧼 Release cleanup — removed temporary <b>DEV: Reset to Free</b> button from the Premium tab</li>
-  <li>✅ v1.1 stability pass — readying the streaks update for release packaging</li>
+  <li>🔥 Streaks added: Deckline now highlights your daily target streak so you can quickly see if you're maintaining momentum day after day. </li>
+  <li>⏱️ Time multiplier split (New vs Reviews): The time estimate now uses separate multipliers for <b>new cards</b> and <b>reviews</b>, instead of one shared value.</li>
 </ul>
 <hr>
 
