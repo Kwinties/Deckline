@@ -23,13 +23,12 @@ _CARD_TARGET_WIDTH = 260
 _DAY_LABELS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
 
-def _heatmap_span(lookback_days: int) -> List[date]:
-    days = max(7, int(lookback_days or 35))
-    total_days = ((days + 6) // 7) * 7  # keep full Mon-Sun rows
+def _heatmap_span() -> List[date]:
+    total_days = 35  # 5 weeks
     today = date.today()
-    start = today - timedelta(days=total_days - 1)
-    # shift to Monday at row start
-    start = start - timedelta(days=start.weekday())
+    this_monday = today - timedelta(days=today.weekday())
+    # Keep current week as the 4th row: 3 weeks before + current + 1 week after.
+    start = this_monday - timedelta(weeks=3)
     return [start + timedelta(days=i) for i in range(total_days)]
 
 
@@ -39,6 +38,7 @@ class HeatmapDeckData:
     name: str
     start_date: Optional[date]
     deadline: Optional[date]
+    cutoff_offset: int
     entries: List[dict]
 
 
@@ -72,7 +72,6 @@ class DecklineHeatmapWidget(QWidget):
         root.addWidget(self.scroll, 1)
 
         self._decks: List[HeatmapDeckData] = []
-        self._lookback_days = 35
 
     def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
@@ -81,11 +80,6 @@ class DecklineHeatmapWidget(QWidget):
 
     def showEvent(self, event) -> None:
         super().showEvent(event)
-        if self._decks:
-            self._rebuild_cards()
-
-    def set_lookback_days(self, days: int) -> None:
-        self._lookback_days = max(7, int(days or 35))
         if self._decks:
             self._rebuild_cards()
 
@@ -126,29 +120,18 @@ class DecklineHeatmapWidget(QWidget):
         self.cards_grid.setRowStretch(rows, 1)
 
     @staticmethod
-    def _default_phase(deck: HeatmapDeckData, entry_map: Dict[str, dict]) -> str:
-        if not deck.start_date:
-            return "new"
-
-        # last known meaningful phase on/after start date
-        for day in sorted(entry_map.keys(), reverse=True):
-            e = entry_map.get(day) or {}
-            ph = str(e.get("phase", "") or "").lower()
-            if ph in ("new", "review"):
-                return ph
-
-        if deck.deadline:
-            return "new" if date.today() <= deck.deadline else "review"
-        return "new"
-
-    def _phase_for_day(self, day: date, raw_phase: str, deck: HeatmapDeckData, fallback_phase: str) -> str:
+    def _phase_for_day(day: date, raw_phase: str, deck: HeatmapDeckData) -> str:
         phase = str(raw_phase or "").lower()
         if day < (deck.start_date or day):
             return "pending"
         if phase and phase != "pending":
             return phase
-        # Pending after start should not happen; use current deck phase.
-        return fallback_phase
+
+        if deck.deadline:
+            cutoff_date = deck.deadline + timedelta(days=int(deck.cutoff_offset or -5))
+            return "new" if day < cutoff_date else "review"
+
+        return "new"
 
     def _build_deck_card(self, deck: HeatmapDeckData) -> QWidget:
         card = QFrame()
@@ -177,7 +160,7 @@ class DecklineHeatmapWidget(QWidget):
         title.setToolTip(deck.name)
         header.addWidget(title, 1)
 
-        span = _heatmap_span(self._lookback_days)
+        span = _heatmap_span()
         span_txt = f"{span[0].strftime('%d %b')} → {span[-1].strftime('%d %b')}"
         subtitle = QLabel(span_txt)
         subtitle.setStyleSheet("color: rgba(169,175,183,0.94); font-size: 11px;")
@@ -204,7 +187,6 @@ class DecklineHeatmapWidget(QWidget):
 
         entry_map = self._entry_map(deck.entries)
         streak_ord = self._streak_ordinals(deck.entries)
-        fallback_phase = self._default_phase(deck, entry_map)
         today = date.today()
 
         for idx, day in enumerate(span):
@@ -229,7 +211,7 @@ class DecklineHeatmapWidget(QWidget):
 
             done = int(e.get("done", 0) or 0)
             target = int(e.get("target", 0) or 0)
-            phase = self._phase_for_day(day, str(e.get("phase", "") or ""), deck, fallback_phase)
+            phase = self._phase_for_day(day, str(e.get("phase", "") or ""), deck)
 
             is_deadline = bool(deck.deadline and deck.deadline == day)
             is_today = day == today
@@ -238,20 +220,20 @@ class DecklineHeatmapWidget(QWidget):
             border = self._border_color(is_deadline=is_deadline, is_today=is_today)
             hover_border = self._hover_border(is_deadline=is_deadline, is_today=is_today)
 
-            if is_deadline:
-                tip = f"Date: {dkey}\nDEADLINE"
-            else:
-                streak_txt = "-"
-                if dkey in streak_ord:
-                    streak_txt = str(streak_ord[dkey])
+            streak_txt = "-"
+            if dkey in streak_ord:
+                streak_txt = str(streak_ord[dkey])
 
-                tip = (
-                    f"Date: {dkey}\n"
-                    f"Done: {done}\n"
-                    f"Target: {target}\n"
-                    f"Phase: {phase.upper()}\n"
-                    f"Streak day: {streak_txt}"
-                )
+            tip = (
+                f"Date: {dkey}\n"
+                f"Done: {done}\n"
+                f"Target: {target}\n"
+                f"Phase: {phase.upper()}\n"
+                f"Streak day: {streak_txt}"
+            )
+            
+            if is_deadline:
+                tip = f"{tip}\nDEADLINE"
 
             border_width = 2 if is_today else 1
 
@@ -272,8 +254,41 @@ class DecklineHeatmapWidget(QWidget):
 
         grid_wrap.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         lay.addWidget(grid_wrap, 0, Qt.AlignmentFlag.AlignHCenter)
+        lay.addWidget(self._build_legend_row(), 0, Qt.AlignmentFlag.AlignHCenter)
         return card
 
+    @staticmethod
+    def _legend_item(color: str, label: str) -> QWidget:
+        item = QWidget()
+        row = QHBoxLayout(item)
+        row.setContentsMargins(0, 0, 0, 0)
+        row.setSpacing(4)
+
+        swatch = QFrame(item)
+        swatch.setFixedSize(10, 10)
+        swatch.setStyleSheet(
+            "background: " + color + "; border: 1px solid rgba(255,255,255,0.15); border-radius: 3px;"
+        )
+
+        txt = QLabel(label, item)
+        txt.setStyleSheet("color: rgba(169,175,183,0.92); font-size: 10px;")
+
+        row.addWidget(swatch, 0)
+        row.addWidget(txt, 0)
+        return item
+
+    def _build_legend_row(self) -> QWidget:
+        legend = QWidget()
+        row = QHBoxLayout(legend)
+        row.setContentsMargins(0, 2, 0, 0)
+        row.setSpacing(8)
+
+        row.addWidget(self._legend_item("rgba(34,197,94,0.92)", "Done"), 0)
+        row.addWidget(self._legend_item("rgba(250,204,21,0.92)", "Partial"), 0)
+        row.addWidget(self._legend_item("rgba(239,68,68,0.92)", "Miss"), 0)
+        row.addWidget(self._legend_item("rgba(148,163,184,0.55)", "No target/rest"), 0)
+        return legend
+      
     @staticmethod
     def _entry_map(entries: List[dict]) -> Dict[str, dict]:
         out: Dict[str, dict] = {}
@@ -374,11 +389,13 @@ def make_heatmap_deck_data(
     deck_deadline: Optional[str],
     entries: List[dict],
     deck_start_date: Optional[str] = None,
+    deck_cutoff_offset: int = -5,
 ) -> HeatmapDeckData:
     return HeatmapDeckData(
         deck_id=int(deck_id),
         name=str(deck_name),
         start_date=_to_date(deck_start_date),
         deadline=_to_date(deck_deadline),
+        cutoff_offset=int(deck_cutoff_offset or -5),
         entries=list(entries or []),
     )

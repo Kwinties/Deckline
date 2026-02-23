@@ -425,13 +425,6 @@ class DecklineStatsDialog(QDialog):
         self.deckBox.setMinimumWidth(280)
         top.addWidget(self.deckBox, 1)
 
-        top.addWidget(QLabel("<b>Lookback:</b>"))
-        self.lookbackBox = QComboBox()
-        for d in (14, 21, 28, 35, 56):
-            self.lookbackBox.addItem(f"{d}d", d)
-        self.lookbackBox.setCurrentIndex(3)  # 35d default
-        top.addWidget(self.lookbackBox, 0)
-
         self.refreshBtn = QPushButton("Refresh")
         self.refreshBtn.setCursor(Qt.CursorShape.PointingHandCursor)
         top.addWidget(self.refreshBtn, 0)
@@ -455,7 +448,6 @@ class DecklineStatsDialog(QDialog):
         self._load_decks()
 
         self.deckBox.currentIndexChanged.connect(self._render)
-        self.lookbackBox.currentIndexChanged.connect(self._render)
         self.refreshBtn.clicked.connect(self._refresh_and_render)
 
         self._render()
@@ -843,11 +835,10 @@ class DecklineStatsDialog(QDialog):
                     deck_deadline=str(getattr(deck, "deadline", "") or ""),
                     entries=get_daily_log_entries(deck_id),
                     deck_start_date=getattr(deck, "start_date", None),
+                    deck_cutoff_offset=int(getattr(deck, "cutoff_offset", -5) or -5),
                 )
             )
 
-        lookback_days = int(getattr(self, "lookbackBox", None).currentData() or 35) if hasattr(self, "lookbackBox") else 35
-        self.heatmap.set_lookback_days(lookback_days)
         self.heatmap.set_decks(heatmap_decks)
 
 

@@ -644,7 +644,7 @@ from typing import Dict, List, Any, Optional, Tuple
 
 
 _DAILY_LOG_KEY = "daily_log"
-_DAILY_LOG_MAX_DAYS = 30
+_DAILY_LOG_MAX_DAYS = 42
 
 
 def _cfg_root() -> dict:
@@ -748,7 +748,7 @@ def log_daily_snapshot_for_deck(stats: "DeadlineStats") -> None:
     """
     Write at most one snapshot per day per deck:
       {date, done, target, phase}
-    Keep max 30 days per deck.
+    Keep max 42 days per deck.
     """
     if not mw.col:
         return
