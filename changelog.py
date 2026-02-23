@@ -23,7 +23,7 @@ from .core import DeadlineDb
 # =========================
 # Deckline changelog config
 # =========================
-DECKLINE_VERSION = "1.0.1"
+DECKLINE_VERSION = "1.1"
 _CFG_KEY_SEEN = "changelog_seen_version"  # stored inside DeadlineDb().db
 
 
@@ -141,17 +141,25 @@ class DecklineChangelogDialog(QDialog):
         html = f"""
         <div style="font-size:12.5px; line-height:1.45;">
           <p style="margin-top:0;">
-            Welcome to the first definitive version of Deckline: <b>Deckline v{DECKLINE_VERSION}</b> 🎉<br>
-            This update is a big polish + UX upgrade — focused on clarity, motivation, and speed.
+            Welcome to <b>Deckline v{DECKLINE_VERSION}</b> 🎉<br>
+            In this update we focus on two concrete improvements: streaks and a more accurate time estimate flow.
           </p>
           
-          <h3 style="margin:14px 0 6px 0;">🛠️ v1.0.1 — Fixes</h3>
+          <h3 style="margin:14px 0 6px 0;">🔥 Streaks added</h3>
           <ul style="margin:6px 0 0 18px;">
-            <li>Fixed: <b>“Show daily progress bar in review screen”</b> toggle now correctly shows/hides the review progress bar.</li>
+            <li>Deckline now highlights your daily target streak so you can quickly see if you're maintaining momentum day after day.</li>
+            <li>This keeps your daily consistency visible at a glance and adds a simple extra motivation loop while studying.</li>
           </ul>
 
 
-          <h3 style="margin:14px 0 6px 0;">✅ New Deck Browser view (Cards instead of a table)</h3>
+          <h3 style="margin:14px 0 6px 0;">⏱️ Time multiplier split (New vs Reviews)</h3>
+          <ul style="margin:6px 0 0 18px;">
+            <li>The time estimate now uses separate multipliers for <b>new cards</b> and <b>reviews</b>, instead of one shared value.</li>
+            <li>Because each phase has different pacing, this gives a more realistic estimate of today's required study time.</li>
+          </ul>
+
+
+          <h3 style="margin:14px 0 6px 0;">✅ Deck Browser cards + topbar (v1.0 foundation)</h3>
           <ul style="margin:6px 0 0 18px;">
             <li><b>Modern card layout</b> — easier to scan at a glance.</li>
             <li><b>Cleaner badges</b> like <span style="color:#22C55E;"><b>ON TRACK</b></span>,
