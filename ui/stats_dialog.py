@@ -22,6 +22,7 @@ from aqt.qt import (
     QFrame,
     QPixmap,
     QLinearGradient,
+    QTabWidget,
 )
 
 
@@ -32,6 +33,7 @@ from ..core import (
     log_daily_snapshot_for_deck,
     calculate_current_streak,  # ✅ add
 )
+from .heatmap import DecklineHeatmapWidget, make_heatmap_deck_data
 
 
 def _iso(d: date) -> str:
@@ -420,8 +422,15 @@ class DecklineStatsDialog(QDialog):
         top.addWidget(QLabel("<b>Deck:</b>"))
 
         self.deckBox = QComboBox()
-        self.deckBox.setMinimumWidth(380)
+        self.deckBox.setMinimumWidth(280)
         top.addWidget(self.deckBox, 1)
+
+        top.addWidget(QLabel("<b>Lookback:</b>"))
+        self.lookbackBox = QComboBox()
+        for d in (14, 21, 28, 35, 56):
+            self.lookbackBox.addItem(f"{d}d", d)
+        self.lookbackBox.setCurrentIndex(3)  # 35d default
+        top.addWidget(self.lookbackBox, 0)
 
         self.refreshBtn = QPushButton("Refresh")
         self.refreshBtn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -435,13 +444,18 @@ class DecklineStatsDialog(QDialog):
         outer.addLayout(top)
 
 
+        self.tabs = QTabWidget(self)
         self.chart = DecklineChartWidget(self)
-        outer.addWidget(self.chart, 1)
+        self.heatmap = DecklineHeatmapWidget(self)
+        self.tabs.addTab(self.chart, "Chart")
+        self.tabs.addTab(self.heatmap, "Heatmap")
+        outer.addWidget(self.tabs, 1)
 
         self._deck_ids: List[int] = []
         self._load_decks()
 
         self.deckBox.currentIndexChanged.connect(self._render)
+        self.lookbackBox.currentIndexChanged.connect(self._render)
         self.refreshBtn.clicked.connect(self._refresh_and_render)
 
         self._render()
@@ -807,6 +821,34 @@ class DecklineStatsDialog(QDialog):
                 title = f"Deck {did}"
 
         self.chart.set_data(title, points)
+
+        # Heatmap data (follows deck dropdown selection)
+        dm = DeadlineMgr()
+        dm.refresh()
+        decks = list(dm.deadlines or [])
+
+        heatmap_decks = []
+        for deck in decks:
+            deck_id = int(getattr(deck, "deck_id", 0) or 0)
+            if deck_id <= 0:
+                continue
+
+            if did != -1 and deck_id != did:
+                continue
+
+            heatmap_decks.append(
+                make_heatmap_deck_data(
+                    deck_id=deck_id,
+                    deck_name=str(getattr(deck, "name", f"Deck {deck_id}")),
+                    deck_deadline=str(getattr(deck, "deadline", "") or ""),
+                    entries=get_daily_log_entries(deck_id),
+                    deck_start_date=getattr(deck, "start_date", None),
+                )
+            )
+
+        lookback_days = int(getattr(self, "lookbackBox", None).currentData() or 35) if hasattr(self, "lookbackBox") else 35
+        self.heatmap.set_lookback_days(lookback_days)
+        self.heatmap.set_decks(heatmap_decks)
 
 
 
