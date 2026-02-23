@@ -1,13 +1,5 @@
 <h2>🚀 Changelog</h2>
 
-<h3>Deckline v1.1</h3>
-<h4>(2026-02-22)</h4>
-<ul>
-  <li>🔥 <b>Streaks toegevoegd</b> — Deckline kan nu je dagelijkse target-streak tonen, zodat je in één oogopslag ziet of je je ritme volhoudt. Dit maakt dagelijkse voortgang motiverender en duidelijker zonder extra schermen.</li>
-  <li>⏱️ <b>Time multiplier opgesplitst</b> — de tijdsinschatting gebruikt nu aparte multipliers voor <b>new</b> en <b>reviews</b>. Daardoor sluit de geschatte studietijd beter aan op je echte workload per fase.</li>
-</ul>
-<hr>
-
 <h3>Deckline v1.0</h3>
 <h4>(2026-02-15)</h4>
 <ul>
