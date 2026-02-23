@@ -23,6 +23,7 @@ from aqt.qt import (
     QPixmap,
     QLinearGradient,
     QTabWidget,
+    QStackedLayout,
 )
 
 
@@ -86,6 +87,12 @@ class DecklineChartWidget(QWidget):
         self.setMinimumHeight(420)
         self._title = "Deckline Stats"
         self._points: List[dict] = []
+
+    @staticmethod
+    def _compact_date_label(dstr: str) -> str:
+        if len(dstr) < 10:
+            return dstr
+        return dstr[8:10]
 
     def set_data(self, title: str, points: List[dict]) -> None:
         self._title = title
@@ -221,6 +228,10 @@ class DecklineChartWidget(QWidget):
         step = inner_w / max(1, n)
         bar_w = max(8, int(step * 0.58))
     
+        min_label_px = 34
+        label_stride = max(1, int((min_label_px + step - 1) // step))
+        value_stride = max(1, label_stride * 2)
+
         for i, p in enumerate(points):
             done = int(p.get("done", 0) or 0)
             target = int(p.get("target", 0) or 0)
@@ -236,22 +247,26 @@ class DecklineChartWidget(QWidget):
             painter.setBrush(QBrush(bar_color))
             painter.drawRoundedRect(bx, by, bar_w, bh, 9, 9)
     
-            # Date label (MM-DD)
+            # Date label (adaptive density)
             dstr = str(p.get("date", ""))  # expected "YYYY-MM-DD"
+            is_edge = i == 0 or i == (n - 1)
+            show_date = is_edge or (i % label_stride == 0)
+            # In 30-day mode we hide done/target labels entirely to avoid x-axis clutter.
+            is_30_day_density = n >= 30
+            show_value = (not is_30_day_density) and (n <= 12 or is_edge or (i % value_stride == 0))
 
-            if len(dstr) >= 10:
-                ds = f"{dstr[8:10]}-{dstr[5:7]}"
-            else:
-                ds = dstr
+            if show_date:
+                ds = self._compact_date_label(dstr)
 
-            painter.setPen(QColor(230, 232, 235, 180))
-            painter.setFont(QFont("Segoe UI", 8, 500))
-            painter.drawText(bx, y1 + 22, bar_w, 14, Qt.AlignmentFlag.AlignHCenter, ds)
-    
-            # Done/Target label
-            painter.setPen(QColor(230, 232, 235, 235))
-            painter.setFont(QFont("Segoe UI", 8, 700))
-            painter.drawText(bx, y1 + 38, bar_w, 14, Qt.AlignmentFlag.AlignHCenter, f"{done}/{target}")
+                painter.setPen(QColor(230, 232, 235, 180))
+                painter.setFont(QFont("Segoe UI", 8, 500))
+                painter.drawText(bx, y1 + 22, bar_w, 14, Qt.AlignmentFlag.AlignHCenter, ds)
+
+            # Done/Target label (hidden in 30-day mode; thinned in shorter dense views)
+            if show_value:
+                painter.setPen(QColor(230, 232, 235, 235))
+                painter.setFont(QFont("Segoe UI", 8, 700))
+                painter.drawText(bx, y1 + 38, bar_w, 14, Qt.AlignmentFlag.AlignHCenter, f"{done}/{target}")
     
         # ---------- Target line ----------
         line_pen = QPen(QColor(99, 102, 241, 235), 2)
@@ -448,33 +463,64 @@ class DecklineStatsDialog(QDialog):
 
 
         self.tabs = QTabWidget(self)
+        self.tabs.setStyleSheet("""
+            QTabWidget::pane {
+                border: none;
+                margin-top: 0px;
+                background: transparent;
+            }
+            QTabWidget::tab-bar {
+                alignment: center;
+            }
+            QTabBar::tab {
+                padding: 6px 14px;
+                margin-right: 4px;
+            }
+        """)
         self.chart = DecklineChartWidget(self) if self._is_premium else None
         self.heatmap = DecklineHeatmapWidget(self)
 
         if self.chart is not None:
             chart_tab_widget = QWidget(self)
+            chart_tab_widget.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+            chart_tab_widget.setStyleSheet("background: transparent;")
             chart_layout = QVBoxLayout(chart_tab_widget)
             chart_layout.setContentsMargins(0, 0, 0, 0)
-            chart_layout.setSpacing(8)
-
-            controls = QHBoxLayout()
-            controls.setContentsMargins(0, 0, 0, 0)
-            controls.setSpacing(6)
-            controls.addStretch(1)
+            chart_layout.setSpacing(0)
 
             self.btn7d = QPushButton("7d")
             self.btn30d = QPushButton("30d")
+
+            self._range_holder = QWidget(self)
+            self._range_holder.setStyleSheet("background: transparent;")
+            self._range_holder.setFixedWidth(124)
+
+            self._range_stack = QStackedLayout(self._range_holder)
+            self._range_stack.setContentsMargins(0, 0, 0, 0)
+            self._range_stack.setStackingMode(QStackedLayout.StackingMode.StackOne)
+
+            self._range_placeholder = QWidget(self)
+            self._range_placeholder.setFixedHeight(28)
+            self._range_placeholder.setStyleSheet("background: transparent;")
+
+            self._range_controls = QWidget(self)
+            range_layout = QHBoxLayout(self._range_controls)
+            range_layout.setContentsMargins(0, 0, 6, 0)
+            range_layout.setSpacing(6)
             for btn in (self.btn7d, self.btn30d):
                 btn.setCheckable(True)
                 btn.setCursor(Qt.CursorShape.PointingHandCursor)
                 btn.setFixedSize(48, 28)
                 btn.setStyleSheet(_chart_range_button_css())
-                controls.addWidget(btn, 0)
+                range_layout.addWidget(btn, 0)
+
+            self._range_stack.addWidget(self._range_placeholder)
+            self._range_stack.addWidget(self._range_controls)
 
             self.btn7d.clicked.connect(lambda: self._on_chart_range_changed(7))
             self.btn30d.clicked.connect(lambda: self._on_chart_range_changed(30))
 
-            chart_layout.addLayout(controls)
+            self.tabs.setCornerWidget(self._range_holder, Qt.Corner.TopRightCorner)
             chart_layout.addWidget(self.chart, 1)
             self._sync_chart_range_buttons()
         else:
@@ -489,7 +535,9 @@ class DecklineStatsDialog(QDialog):
 
         self.deckBox.currentIndexChanged.connect(self._render)
         self.refreshBtn.clicked.connect(self._refresh_and_render)
+        self.tabs.currentChanged.connect(self._on_tab_changed)
 
+        self._on_tab_changed(self.tabs.currentIndex())
         self._render()
 
     # ----------------------------
@@ -799,6 +847,15 @@ class DecklineStatsDialog(QDialog):
             return
         self.btn7d.setChecked(self._chart_days == 7)
         self.btn30d.setChecked(self._chart_days == 30)
+
+    def _on_tab_changed(self, index: int) -> None:
+        if not hasattr(self, "_range_stack"):
+            return
+        is_chart = self.tabs.tabText(index).lower() == "chart"
+        # Keep reserved corner width but only show controls on the Chart tab.
+        self._range_stack.setCurrentWidget(self._range_controls if is_chart else self._range_placeholder)
+        for btn in (self.btn7d, self.btn30d):
+            btn.setEnabled(is_chart)
 
     def _render(self) -> None:
         did = int(self.deckBox.currentData() or -1)
