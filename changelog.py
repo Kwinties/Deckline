@@ -1,6 +1,5 @@
-# changelog.py
 from __future__ import annotations
-
+from pathlib import Path
 from aqt import mw
 from aqt.qt import (
     QDialog,
@@ -137,6 +136,8 @@ class DecklineChangelogDialog(QDialog):
             "}"
         )
 
+        streak_img = (Path(__file__).resolve().parent / "deckline_streaks.png").as_uri()
+
         # Feel free to tweak text here later.
         html = f"""
         <div style="font-size:12.5px; line-height:1.45;">
@@ -145,56 +146,30 @@ class DecklineChangelogDialog(QDialog):
             In this update we focus on two concrete improvements: streaks and a more accurate time estimate flow.
           </p>
           
-          <h3 style="margin:14px 0 6px 0;">🔥 Streaks added</h3>
+          <h3 style="margin:14px 0 6px 0;">🆓 Free core access expanded</h3>
           <ul style="margin:6px 0 0 18px;">
-            <li>Deckline now highlights your daily target streak so you can quickly see if you're maintaining momentum day after day.</li>
-            <li>This keeps your daily consistency visible at a glance and adds a simple extra motivation loop while studying.</li>
+            <li>Free users can now create up to <b>3 deadlines</b> before hitting the premium cap.</li>
+            <li>This opens up more of Deckline's core planning workflow in the free version.</li>
           </ul>
 
+          <h3 style="margin:14px 0 6px 0;">🔥 Streaks added (premium users)</h3>
+          <ul style="margin:6px 0 0 18px;">
+            <li>Deckline now highlights your daily target streak so you can quickly see if you're maintaining momentum day after day.</li>
+            <li>The streak improves when you meet your daily review goal.</li>
+            <li>This keeps your daily consistency visible at a glance and adds a simple extra motivation loop while studying.</li>
+          </ul>
+          
+          <div style="margin:10px 0 12px 0; padding:10px; border-radius:12px;">
+            <img src="{streak_img}"
+                 alt="Deckline streaks"
+                 style="width:100%; max-width:620px; border-radius:10px; display:block; margin:0 auto;" />
+          </div>
 
-          <h3 style="margin:14px 0 6px 0;">⏱️ Time multiplier split (New vs Reviews)</h3>
+
+          <h3 style="margin:14px 0 6px 0;">⏱️ Time multiplier split (New vs Reviews) (Idea from zitrone420 on Github)</h3>
           <ul style="margin:6px 0 0 18px;">
             <li>The time estimate now uses separate multipliers for <b>new cards</b> and <b>reviews</b>, instead of one shared value.</li>
             <li>Because each phase has different pacing, this gives a more realistic estimate of today's required study time.</li>
-          </ul>
-
-
-          <h3 style="margin:14px 0 6px 0;">✅ Deck Browser cards + topbar (v1.0 foundation)</h3>
-          <ul style="margin:6px 0 0 18px;">
-            <li><b>Modern card layout</b> — easier to scan at a glance.</li>
-            <li><b>Cleaner badges</b> like <span style="color:#22C55E;"><b>ON TRACK</b></span>,
-                <span style="color:#EF4444;"><b>BEHIND</b></span>, <span style="color:#3B82F6;"><b>PENDING</b></span>.</li>
-            <li><b>Focus + Sort controls</b> in the new topbar to instantly find what matters.</li>
-          </ul>
-
-          <h3 style="margin:14px 0 6px 0;">✨ UI improvements everywhere</h3>
-          <ul style="margin:6px 0 0 18px;">
-            <li>Smoother spacing, better typography, and consistent styling.</li>
-            <li>Tooltips explain <b>Phase 1 (NEW)</b> vs <b>Phase 2 (REVIEW)</b> more clearly.</li>
-            <li>Deck icons + accent colors are more consistent and readable.</li>
-          </ul>
-
-          <h3 style="margin:14px 0 6px 0;">📈 Premium: Stats dashboard (7-day view)</h3>
-          <ul style="margin:6px 0 0 18px;">
-            <li>New <b>Deckline Stats</b> window: last 7 days, per deck, done vs target.</li>
-            <li>Instant green/red feedback: above/below target.</li>
-            <li>Also supports <b>All deadlines (sum)</b> to see your total momentum.</li>
-          </ul>
-
-          <h3 style="margin:14px 0 6px 0;">💎 Premium: More motivation + control</h3>
-          <ul style="margin:6px 0 0 18px;">
-            <li><b>Unlimited deadlines</b> (no cap).</li>
-            <li><b>Vacation days</b>: add days off and Deckline adjusts your daily target automatically.</li>
-            <li><b>Custom progress colors</b>: auto / solid / gradient.</li>
-            <li><b>Celebration animation</b> when you hit 100% for the first time that day.</li>
-          </ul>
-
-          <h3 style="margin:14px 0 6px 0;">🧠 Small but important behavior changes</h3>
-          <ul style="margin:6px 0 0 18px;">
-            <li>Targets stay stable during the day (less “moving goalpost” feeling).</li>
-            <li>Better handling of parent decks: the progress bars follow the nearest enabled deadline deck.</li>
-            <li>Cleaner “rest day” behavior for skipped days (weekends/vacations).</li>
-            <li>You can access the deadline settings by clicking the **icon on the left side of a Deckline card** in the Deck Browser.</li>
           </ul>
 
           <div style="margin-top:14px; padding:12px; border-radius:12px;
@@ -213,21 +188,13 @@ class DecklineChangelogDialog(QDialog):
         # -------------------------
         footer = QHBoxLayout()
         footer.setSpacing(10)
-
+        
         self.dontShowAgain = QCheckBox("Don’t show this again")
-        self.dontShowAgain.setChecked(True)  # default: once per version
+        self.dontShowAgain.setChecked(True)
         footer.addWidget(self.dontShowAgain, 0)
-
+        
         footer.addStretch(1)
-
-        btnSettings = QPushButton("Open settings")
-        btnSettings.setCursor(Qt.CursorShape.PointingHandCursor)
-        btnSettings.clicked.connect(_open_settings_global)
-
-        btnStats = QPushButton("Open Stats")
-        btnStats.setCursor(Qt.CursorShape.PointingHandCursor)
-        btnStats.clicked.connect(_open_stats)
-
+        
         btnPremium = QPushButton("Upgrade to Premium")
         btnPremium.setCursor(Qt.CursorShape.PointingHandCursor)
         btnPremium.setStyleSheet(
@@ -236,10 +203,9 @@ class DecklineChangelogDialog(QDialog):
             "QPushButton:hover { background: rgba(255, 63, 152, 0.98); }"
         )
         btnPremium.clicked.connect(_open_kofi)
-
-        footer.addWidget(btnSettings, 0)
-        footer.addWidget(btnStats, 0)
+        
         footer.addWidget(btnPremium, 0)
+
 
         root.addLayout(footer)
 

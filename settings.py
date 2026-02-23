@@ -836,6 +836,9 @@ class DeadlinerDialog(QDialog):
     
         unlockBtn = QPushButton("Unlock")
         unlockBtn.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        resetFreeBtn = QPushButton("Reset naar Free test")
+        resetFreeBtn.setCursor(Qt.CursorShape.PointingHandCursor)
     
         def _refresh_status() -> None:
             self.premiumStatusLabel.setText(
@@ -856,9 +859,18 @@ class DeadlinerDialog(QDialog):
             else:
                 showInfo("Invalid code.\n\nCheck your Ko-fi message and try again.")
     
+        def _reset_to_free_test() -> None:
+            self.db.is_premium = False
+            self.db.save()
+            refreshDeadliner()
+            _refresh_status()
+            showInfo("Premium reset to free test mode.")
+
         unlockBtn.clicked.connect(_unlock)
-    
+        resetFreeBtn.clicked.connect(_reset_to_free_test)
+
         btnRowL.addWidget(unlockBtn, 0)
+        btnRowL.addWidget(resetFreeBtn, 0)
         btnRowL.addStretch(1)
     
         form.addRow("", btnRow)

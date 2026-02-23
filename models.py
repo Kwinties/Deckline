@@ -66,7 +66,7 @@ class DeadlineDeck:
         is_new = self.deck_key not in db.deadlines
 
         if is_new and not db.is_premium:
-            if len(db.deadlines) >= 2:
+            if len(db.deadlines) >= 3:
                 from aqt.qt import QMessageBox
                 from aqt import mw
                 import webbrowser
@@ -76,7 +76,7 @@ class DeadlineDeck:
                 msg.setIcon(QMessageBox.Icon.Information)
             
                 msg.setText(
-                    "You can only create 2 deadlines in the free version.\n\n"
+                    "You can only create 3 deadlines in the free version.\n\n"
                     "Upgrade to support development of Deckline and to unlock unlimited deadlines."
                 )
             
