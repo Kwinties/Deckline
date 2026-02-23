@@ -12,14 +12,13 @@ from aqt.qt import (
     QScrollArea,
     QSizePolicy,
     Qt,
-    QTimer,
     QVBoxLayout,
     QWidget,
 )
 
 
 _GRID_COLS = 7
-_CARD_TARGET_WIDTH = 260
+_CARD_TARGET_WIDTH = 300
 _DAY_LABELS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
 
@@ -46,7 +45,7 @@ class HeatmapDayCell(QFrame):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setObjectName("decklineHeatmapCell")
-        self.setFixedSize(18, 18)
+        self.setFixedSize(22, 22)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
 
@@ -86,13 +85,14 @@ class DecklineHeatmapWidget(QWidget):
     def set_decks(self, decks: List[HeatmapDeckData]) -> None:
         self._decks = list(decks or [])
         self._rebuild_cards()
-        QTimer.singleShot(0, self._rebuild_cards)
 
     def _clear_cards(self) -> None:
         while self.cards_grid.count():
             item = self.cards_grid.takeAt(0)
             w = item.widget()
             if w is not None:
+                # Detach immediately so repeated rebuilds cannot stack visuals.
+                w.setParent(None)
                 w.deleteLater()
 
     def _rebuild_cards(self) -> None:
@@ -173,8 +173,8 @@ class DecklineHeatmapWidget(QWidget):
         grid_wrap = QWidget()
         grid = QGridLayout(grid_wrap)
         grid.setContentsMargins(0, 0, 0, 0)
-        grid.setHorizontalSpacing(4)
-        grid.setVerticalSpacing(4)
+        grid.setHorizontalSpacing(6)
+        grid.setVerticalSpacing(6)
 
         label_style = "color: rgba(169,175,183,0.90); font-size: 10px;"
 
@@ -182,7 +182,7 @@ class DecklineHeatmapWidget(QWidget):
             day_lbl = QLabel(_DAY_LABELS[col])
             day_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
             day_lbl.setStyleSheet(label_style)
-            day_lbl.setFixedWidth(18)
+            day_lbl.setFixedWidth(22)
             grid.addWidget(day_lbl, 0, col + 1)
 
         entry_map = self._entry_map(deck.entries)
@@ -197,12 +197,12 @@ class DecklineHeatmapWidget(QWidget):
                 week_lbl = QLabel(str(day.isocalendar()[1]))
                 week_lbl.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                 week_lbl.setStyleSheet(label_style)
-                week_lbl.setFixedWidth(18)
+                week_lbl.setFixedWidth(22)
                 grid.addWidget(week_lbl, row + 1, 0)
 
             if (deck.start_date and day < deck.start_date) or (deck.deadline and day > deck.deadline):
                 empty = QWidget(grid_wrap)
-                empty.setFixedSize(18, 18)
+                empty.setFixedSize(22, 22)
                 grid.addWidget(empty, row + 1, col + 1)
                 continue
 
@@ -214,6 +214,7 @@ class DecklineHeatmapWidget(QWidget):
             phase = self._phase_for_day(day, str(e.get("phase", "") or ""), deck)
 
             is_deadline = bool(deck.deadline and deck.deadline == day)
+            is_start_day = bool(deck.start_date and deck.start_date == day)
             is_today = day == today
 
             fill = self._fill_color(done=done, target=target, phase=phase)
@@ -234,6 +235,8 @@ class DecklineHeatmapWidget(QWidget):
             
             if is_deadline:
                 tip = f"{tip}\nDEADLINE"
+            if is_start_day:
+                tip = f"{tip}\nSTART DAY"
 
             border_width = 2 if is_today else 1
 
@@ -249,6 +252,21 @@ class DecklineHeatmapWidget(QWidget):
                 f" border: {border_width}px solid {hover_border};"
                 "}"
             )
+
+            marker = ""
+            if is_start_day and is_deadline:
+                marker = "🚀🚨"
+            elif is_start_day:
+                marker = "🚀"
+            elif is_deadline:
+                marker = "🚨"
+
+            if marker:
+                marker_lbl = QLabel(marker, cell)
+                marker_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                marker_lbl.setGeometry(0, 0, cell.width(), cell.height())
+                marker_lbl.setStyleSheet("background: transparent; font-size: 10px;")
+                marker_lbl.show()
 
             grid.addWidget(cell, row + 1, col + 1)
 

@@ -345,13 +345,8 @@ class DecklineStatsDialog(QDialog):
         self._is_premium = bool(self.db.is_premium)
 
         self.setWindowTitle("Deckline Stats")
-        if self._is_premium:
-            self.setMinimumWidth(900)
-            self.setMinimumHeight(560)
-        else:
-            # Smaller paywall dialog (does not affect premium chart dialog)
-            self.setFixedWidth(760)
-            self.setMinimumHeight(520)
+        self.setMinimumWidth(900)
+        self.setMinimumHeight(560)
 
 
         # Subtle global styling for this dialog
@@ -370,12 +365,7 @@ class DecklineStatsDialog(QDialog):
         outer.setContentsMargins(0, 0, 0, 0)
         outer.setSpacing(0)
         
-        # Free version: show only the lockscreen (no extra header bar)
-        if not self._is_premium:
-            outer.addWidget(self._build_blurred_locked_screen_widget(), 1)
-            return
-        
-        # Premium version continues below (normal header + chart)
+        # Shared header/body for both Free and Premium users.
         outer.setContentsMargins(14, 14, 14, 14)
         outer.setSpacing(12)
         
@@ -390,13 +380,19 @@ class DecklineStatsDialog(QDialog):
         title.setFont(f)
         header.addWidget(title, 0)
         
-        badge = QLabel("ACTIVE")
+        badge = QLabel("PREMIUM" if self._is_premium else "FREE")
         badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
         badge.setFixedHeight(22)
-        badge.setStyleSheet(
-            "padding: 0 10px; border-radius: 999px; font-weight: 900; letter-spacing: 1px;"
-            "background: rgba(34,197,94,0.14); color: rgba(187,247,208,0.98); border: 1px solid rgba(34,197,94,0.25);"
-        )
+        if self._is_premium:
+            badge.setStyleSheet(
+                "padding: 0 10px; border-radius: 999px; font-weight: 900; letter-spacing: 1px;"
+                "background: rgba(34,197,94,0.14); color: rgba(187,247,208,0.98); border: 1px solid rgba(34,197,94,0.25);"
+            )
+        else:
+            badge.setStyleSheet(
+                "padding: 0 10px; border-radius: 999px; font-weight: 900; letter-spacing: 1px;"
+                "background: rgba(148,163,184,0.18); color: rgba(226,232,240,0.98); border: 1px solid rgba(148,163,184,0.35);"
+            )
         header.addWidget(badge, 0)
         
         header.addStretch(1)
@@ -409,13 +405,7 @@ class DecklineStatsDialog(QDialog):
         outer.addLayout(header)
 
 
-        # --- If NOT premium: show paywall and stop here ---
-        if not self._is_premium:
-            outer.addWidget(self._build_blurred_locked_screen_widget(), 1)
-            return
-
-
-        # --- Premium UI (chart) ---
+        # --- Shared UI (heatmap free, chart premium) ---
         top = QHBoxLayout()
         top.setSpacing(10)
 
@@ -438,10 +428,13 @@ class DecklineStatsDialog(QDialog):
 
 
         self.tabs = QTabWidget(self)
-        self.chart = DecklineChartWidget(self)
+        self.chart = DecklineChartWidget(self) if self._is_premium else None
         self.heatmap = DecklineHeatmapWidget(self)
-        self.tabs.addTab(self.chart, "Chart")
+
+        chart_tab_widget = self.chart if self.chart is not None else self._build_blurred_locked_screen_widget()
+
         self.tabs.addTab(self.heatmap, "Heatmap")
+        self.tabs.addTab(chart_tab_widget, "Chart")
         outer.addWidget(self.tabs, 1)
 
         self._deck_ids: List[int] = []
@@ -812,7 +805,8 @@ class DecklineStatsDialog(QDialog):
             except Exception:
                 title = f"Deck {did}"
 
-        self.chart.set_data(title, points)
+        if self.chart is not None:
+            self.chart.set_data(title, points)
 
         # Heatmap data (follows deck dropdown selection)
         dm = DeadlineMgr()

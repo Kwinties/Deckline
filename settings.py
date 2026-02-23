@@ -859,6 +859,20 @@ class DeadlinerDialog(QDialog):
         unlockBtn.clicked.connect(_unlock)
     
         btnRowL.addWidget(unlockBtn, 0)
+
+        resetFreeBtn = QPushButton("Dev reset to Free")
+        resetFreeBtn.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        def _reset_to_free() -> None:
+            self.db.is_premium = False
+            self.db.save()
+            refreshDeadliner()
+            _refresh_status()
+            showInfo("Premium status reset to Free (dev mode).")
+
+        resetFreeBtn.clicked.connect(_reset_to_free)
+
+        btnRowL.addWidget(resetFreeBtn, 0)
         btnRowL.addStretch(1)
     
         form.addRow("", btnRow)

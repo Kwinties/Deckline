@@ -339,15 +339,13 @@ def display_footer(deck_browser, content) -> None:
         # --- Premium: stats button ---
     stats_button_html = ""
     try:
-        # --- Stats button: always opens stats dialog.
-        # The dialog itself will show either the chart (premium) or the paywall (free).
+        # Stats button is always accessible; chart lock is handled in the stats dialog.
+        stats_icon = "📈"
         if db.is_premium:
-            stats_icon = "📈"
-            stats_title = "Open Stats"
+            stats_title = "Open Stats (Chart + Heatmap)"
         else:
-            stats_icon = "🔒"
-            stats_title = "Stats locked (Premium)"
-    
+            stats_title = "Open Stats (Heatmap free, Chart premium)"
+
         stats_button_html = (
             "<button class='deckline-topbtn deckline-topbtn-stats' "
             f"title='{stats_title}' "
@@ -356,12 +354,12 @@ def display_footer(deck_browser, content) -> None:
         )
 
     except Exception:
-        # If premium flag is missing for any reason, default to locked button
+        # If premium flag is missing for any reason, still open stats safely.
         stats_button_html = (
             "<button class='deckline-topbtn deckline-topbtn-stats' "
-            "onclick='pycmd(\"deckline_ui:upgrade:\")'>🔒</button>"
+            "title='Open Stats' "
+            "onclick='pycmd(\"deckline_ui:open_stats:\")'>📈</button>"
         )
-
     ui = get_deckline_ui_state()
     focus_mode = bool(ui.get("focus_mode", False))
     focused_did = ui.get("focused_did", None)
