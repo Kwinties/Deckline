@@ -3,7 +3,6 @@
 
 from datetime import datetime, timedelta
 from typing import Optional
-import os
 from aqt import mw
 from aqt.qt import *
 from aqt.utils import showInfo
@@ -864,52 +863,6 @@ class DeadlinerDialog(QDialog):
     
         form.addRow("", btnRow)
         
-        # -------------------------
-        # DEV tools (hidden for users)
-        # -------------------------
-        # TEMPORARILY set to True for testing
-        try:
-            is_dev = (os.environ.get("DECKLINE_DEV", "") == "1") or True  # ← voeg "or True" toe
-        except Exception:
-            is_dev = True  # ← verander naar True
-
-        if is_dev:
-            devRow = QWidget()
-            devRowL = QHBoxLayout(devRow)
-            devRowL.setContentsMargins(0, 0, 0, 0)
-            devRowL.setSpacing(8)
-
-            devResetBtn = QPushButton("DEV: Reset to Free")
-            devResetBtn.setCursor(Qt.CursorShape.PointingHandCursor)
-            devResetBtn.setToolTip("Developer-only: force Premium OFF (sets Free version).")
-
-            def _dev_reset_to_free() -> None:
-                # Force premium off
-                self.db.is_premium = False
-
-                # Optional: also force premium-only settings back to free-safe defaults
-                # (handig om te testen)
-                try:
-                    self.db.enable_streaks = False
-                except Exception:
-                    pass
-                try:
-                    self.db.show_celebration = False
-                except Exception:
-                    pass
-
-                self.db.save()
-                refreshDeadliner()
-                _refresh_status()
-                showInfo("DEV: Premium disabled (Free version).")
-
-            devResetBtn.clicked.connect(_dev_reset_to_free)
-
-            devRowL.addWidget(devResetBtn, 0)
-            devRowL.addStretch(1)
-
-            form.addRow("", devRow)
-            
         # Subtle divider
         spacer = QLabel("")
         spacer.setFixedHeight(6)
@@ -1228,12 +1181,11 @@ class DeadlinerDialog(QDialog):
     
             # --- PREMIUM: celebration + bar colors ---
             if is_premium:
-                if getattr(self, "showCelebrationCheckbox", None):
-                    self.db.show_celebration = bool(self.showCelebrationCheckbox.isChecked())
-
-                # ✅ ADD THIS
                 if getattr(self, "streaksCheckbox", None):
                     self.db.enable_streaks = bool(self.streaksCheckbox.isChecked())
+
+                if getattr(self, "showCelebrationCheckbox", None):
+                    self.db.show_celebration = bool(self.showCelebrationCheckbox.isChecked())
 
                 mode_txt = self.pbColorModeBox.currentText().lower() if getattr(self, "pbColorModeBox", None) else "auto"
                 mode = "auto"
