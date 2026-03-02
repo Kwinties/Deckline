@@ -36,7 +36,7 @@ def _open_kofi() -> None:
 
 def _open_stats() -> None:
     try:
-        from .ui.stats_dialog import open_deckline_stats_dialog
+        from .stats.stats_dialog import open_deckline_stats_dialog
         open_deckline_stats_dialog()
     except Exception as e:
         print(f"Deckline changelog open_stats error: {e}")

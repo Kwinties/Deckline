@@ -210,7 +210,7 @@ def on_js_message(handled: tuple[bool, Any], message: str, context: Any):
 
         if action == "open_stats":
             try:
-                from .ui.stats_dialog import open_deckline_stats_dialog
+                from .stats.stats_dialog import open_deckline_stats_dialog
                 open_deckline_stats_dialog()
             except Exception as e:
                 print(f"Deckline stats dialog error: {e}")
