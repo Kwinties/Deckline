@@ -336,7 +336,7 @@ def display_footer(deck_browser, content) -> None:
     deadlines = dm.deadlines
     db = DeadlineDb()
 
-        # --- Premium: stats button ---
+    # --- stats button ---
     stats_button_html = ""
     try:
         # Stats button is always accessible; chart lock is handled in the stats dialog.
@@ -345,7 +345,7 @@ def display_footer(deck_browser, content) -> None:
             stats_title = "Open Stats (Chart + Heatmap)"
         else:
             stats_title = "Open Stats (Heatmap free, Chart premium)"
-
+    
         stats_button_html = (
             "<button class='deckline-topbtn deckline-topbtn-stats' "
             f"title='{stats_title}' "
@@ -354,12 +354,12 @@ def display_footer(deck_browser, content) -> None:
         )
 
     except Exception:
-        # If premium flag is missing for any reason, still open stats safely.
+        # If premium flag is missing for any reason, default to locked button
         stats_button_html = (
-            "<button class='deckline-topbtn deckline-topbtn-stats' "
             "title='Open Stats' "
             "onclick='pycmd(\"deckline_ui:open_stats:\")'>📈</button>"
         )
+
     ui = get_deckline_ui_state()
     focus_mode = bool(ui.get("focus_mode", False))
     focused_did = ui.get("focused_did", None)
