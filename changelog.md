@@ -1,5 +1,14 @@
 <h2>🚀 Changelog</h2>
 
+<h3>Deckline v1.2</h3>
+<h4>(2026-03-04)</h4>
+<ul>
+  <li>🗺️ <b>Heatmap added to Stats</b> — the Stats window now includes a dedicated <b>Heatmap</b> tab, giving you a deck-by-deck view of your recent study consistency.</li>
+  <li>🎨 <b>Daily tile feedback improved</b> — each heatmap cell now reflects progress against your daily target in the <b>New</b> and <b>Review</b> phases, so weak days stand out instantly.</li>
+  <li>🎯 <b>Deadline pacing clarity</b> — richer day tooltips (done, target, phase, streak-day context) make it easier to diagnose pacing issues and recover before deadlines.</li>
+</ul>
+<hr>
+
 <h3>Deckline v1.1</h3>
 <h4>(2026-02-22)</h4>
 <ul>

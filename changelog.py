@@ -23,7 +23,7 @@ from .core import DeadlineDb
 # =========================
 # Deckline changelog config
 # =========================
-DECKLINE_VERSION = "1.1"
+DECKLINE_VERSION = "1.2"
 _CFG_KEY_SEEN = "changelog_seen_version"  # stored inside DeadlineDb().db
 
 
@@ -137,41 +137,34 @@ class DecklineChangelogDialog(QDialog):
             "}"
         )
 
-        streak_img = (Path(__file__).resolve().parent / "deckline_streaks.png").as_uri()
+        stats_img = (Path(__file__).resolve().parent / "Deckline_stats.png").as_uri()
 
         # Feel free to tweak text here later.
         html = f"""
         <div style="font-size:12.5px; line-height:1.45;">
           <p style="margin-top:0;">
             Welcome to <b>Deckline v{DECKLINE_VERSION}</b> 🎉<br>
-            In this update we focus on two concrete improvements: streaks and a more accurate time estimate flow.
+            In this update we focus on one major quality-of-life upgrade: the new Deckline Heatmap.
           </p>
           
-          <h3 style="margin:14px 0 6px 0;">🆓 Free core access expanded</h3>
+          <h3 style="margin:14px 0 6px 0;">🗺️ NEW: Heatmap tab in Stats</h3>
           <ul style="margin:6px 0 0 18px;">
-            <li>Free users can now create up to <b>3 deadlines</b> before hitting the premium cap.</li>
-            <li>This opens up more of Deckline's core planning workflow in the free version.</li>
+            <li>The Stats window now includes a dedicated <b>Heatmap</b> tab that shows your recent study pattern per deck.</li>
+            <li>Each day tile reflects how much of your daily target you completed in the <b>New</b> and <b>Review</b> phases.</li>
+            <li>You can instantly see consistency, weak days, and momentum without opening individual deck details.</li>
           </ul>
 
-          <h3 style="margin:14px 0 6px 0;">🔥 Streaks added (premium users)</h3>
+          <h3 style="margin:14px 0 6px 0;">🎯 Better deadline awareness</h3>
           <ul style="margin:6px 0 0 18px;">
-            <li>Deckline now highlights your daily target streak so you can quickly see if you're maintaining momentum day after day.</li>
-            <li>The streak improves when you meet your daily review goal.</li>
-            <li>This keeps your daily consistency visible at a glance and adds a simple extra motivation loop while studying.</li>
+            <li>Heatmap cells now make it easier to spot <b>deadline pressure</b>, pacing shifts, and where catch-up is needed.</li>
+            <li>Tooltips provide per-day details like done, target, phase, and streak-day context for quick diagnostics.</li>
           </ul>
           
           <div style="margin:10px 0 12px 0; padding:10px; border-radius:12px;">
-            <img src="{streak_img}"
-                 alt="Deckline streaks"
+            <img src="{stats_img}"
+                 alt="Deckline heatmap"
                  style="width:100%; max-width:620px; border-radius:10px; display:block; margin:0 auto;" />
           </div>
-
-
-          <h3 style="margin:14px 0 6px 0;">⏱️ Time multiplier split (New vs Reviews) (Idea from zitrone420 on Github)</h3>
-          <ul style="margin:6px 0 0 18px;">
-            <li>The time estimate now uses separate multipliers for <b>new cards</b> and <b>reviews</b>, instead of one shared value.</li>
-            <li>Because each phase has different pacing, this gives a more realistic estimate of today's required study time.</li>
-          </ul>
 
           <div style="margin-top:14px; padding:12px; border-radius:12px;
                       background: rgba(255,90,165,0.08); border:1px solid rgba(255,90,165,0.18);">
