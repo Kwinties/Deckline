@@ -107,6 +107,7 @@ def _render_card(
     progress_total_percent: int,
     progress_tooltip: str,
     *,
+    cutoff_new_warning: bool,
     cutoff_date,
     study_days_to_cutoff: int,
     study_days_to_deadline: int,
@@ -162,24 +163,29 @@ def _render_card(
     cutoff_s = cutoff_date.strftime("%d-%m-%Y")
     deadline_s = dl.deadline.strftime("%d-%m-%Y")
 
-    if is_new_phase:
+    if cutoff_new_warning:
+        phase_label = "NEW"
+        phase_class = "phase-new-cutoff"
+        phase_tooltip = (
+            f"You are still learning new cards, while the cutoff has passed on {cutoff_s}.\n"
+            f"Finish these cards as soon as possible to enter the REVIEW phase.\n"
+            f"• New cards still to learn: {pending_value}"
+        )
+    elif is_new_phase:
         phase_label = "NEW"
         phase_class = "phase-new"
 
         if today_is_skip:
-            switch_line = f"Phase switches after your next study day (Cutoff: {cutoff_s})"
+            switch_line = f"Phase switches after {cutoff_s}."
         else:
             switch_line = f"Phase switches in {max(int(study_days_to_cutoff), 0)} study day(s) (Cutoff: {cutoff_s})"
 
         phase_tooltip = (
-            "PHASE 1 — NEW (before cutoff)\n"
+            "PHASE 1: NEW\n"
             f"{switch_line}\n"
             "\n"
             "Goal:\n"
-            "• Review (blue/red) new cards before the cutoff.\n"
-            "\n"
-            "Today counts as:\n"
-            "• New cards STARTED today (first-ever review today)."
+            "• Review (blue/red) new cards before the cutoff."
         )
     else:
         phase_label = "REVIEW"
@@ -191,15 +197,12 @@ def _render_card(
             end_line = f"Deadline in {max(int(study_days_to_deadline), 0)} study day(s) (Deadline: {deadline_s})"
 
         phase_tooltip = (
-            "PHASE 2 — REVIEW (after cutoff)\n"
+            "PHASE 2: REVIEW\n"
             f"{end_line}\n"
             f"Cutoff was: {cutoff_s}\n"
             "\n"
             "Goal:\n"
-            "• Finish remaining (green) young cards before the deadline.\n"
-            "\n"
-            "Today counts as:\n"
-            "• DISTINCT cards reviewed today."
+            "• Finish remaining (green) young cards before the deadline."
         )
 
     pending_tooltip = f"Pending cards: {pending_value}"
@@ -521,6 +524,10 @@ def display_footer(deck_browser, content) -> None:
         ".phase-new{"
         "color:rgba(148,163,184,.95);"
         "}"
+
+        ".phase-new-cutoff{"
+        "color:rgba(239,68,68,0.98);"
+        "}"
         
         ".phase-review{color:#A7BFB5;}"
 
@@ -585,6 +592,7 @@ def display_footer(deck_browser, content) -> None:
 
         expected_total, planned_remaining = _planned_remaining_cards(dl)
         learning_phase = (today < cutoff_date) and ((new > 0) or (planned_remaining > 0))
+        cutoff_new_warning = (today >= cutoff_date) and (new > 0)
         pending_value = new if learning_phase else (young + new)
 
         done_today = done_today_for_target(dl) or 0
@@ -713,6 +721,7 @@ def display_footer(deck_browser, content) -> None:
             "study_days_to_cutoff": int(study_days_to_cutoff),
             "study_days_to_deadline": int(study_days_to_deadline),
             "today_is_skip": bool(today_is_skip),
+            "cutoff_new_warning": bool(cutoff_new_warning),
 
         })
 
@@ -933,6 +942,7 @@ def display_footer(deck_browser, content) -> None:
             progress_total=r["progress_total"],
             progress_total_percent=r["progress_total_percent"],
             progress_tooltip=r["progress_tooltip"],
+            cutoff_new_warning=r["cutoff_new_warning"],
             cutoff_date=r["cutoff_date"],
             study_days_to_cutoff=r["study_days_to_cutoff"],
             study_days_to_deadline=r["study_days_to_deadline"],
