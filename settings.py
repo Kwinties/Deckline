@@ -109,6 +109,7 @@ class DeadlinerDialog(QDialog):
         self._build_tab_deadline()
         self._build_tab_optional()
         self._build_tab_feedback()
+        self._build_tab_visuals()
         self._build_tab_vacation()
         self._build_tab_premium()
 
@@ -576,24 +577,37 @@ class DeadlinerDialog(QDialog):
         basic_form.addRow("Time estimate multiplier (reviews):", self.timeMultiplierReviewSpin)
     
         outer.addWidget(basicGroup)
+        outer.addStretch(1)
     
-        # -------------------------
-        # Premium visuals (PREMIUM)
-        # -------------------------
+        self.tabs.addTab(tab, "Feedback")
+
+    def _build_tab_visuals(self) -> None:
+        tab = QWidget()
+        outer = QVBoxLayout(tab)
+        outer.setContentsMargins(12, 12, 12, 12)
+        outer.setSpacing(10)
+
+        def _bool_box(checked: bool) -> QCheckBox:
+            cb = QCheckBox("")
+            cb.setChecked(bool(checked))
+            cb.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+            cb.setStyleSheet("QCheckBox { padding-left: 2px; }")
+            return cb
+
         is_premium = bool(getattr(self.db, "is_premium", False))
-    
+
         title = "Premium visuals" if is_premium else "Premium visuals 🔒"
         premiumGroup = self._group(title)
         prem_form = self._form(premiumGroup)
-    
+
         # Bar color (premium)
         cfg = self.db.db.get("progress_fill", {}) if hasattr(self.db, "db") else {}
         if not isinstance(cfg, dict):
             cfg = {}
-    
+
         mode = (cfg.get("mode") or "auto").lower()
         solid = (cfg.get("solid") or "#22C55E").strip()
-    
+
         grad_list = cfg.get("gradient")
         if not isinstance(grad_list, list):
             grad_list = ["#EF4444", "#F59E0B", "#22C55E"]
@@ -602,7 +616,7 @@ class DeadlinerDialog(QDialog):
             grad_list = ["#EF4444", "#F59E0B", "#22C55E"]
         if len(grad_list) > 3:
             grad_list = grad_list[:3]
-    
+
         self.pbColorModeBox = QComboBox()
         self.pbColorModeBox.addItems(["Auto", "Solid", "Gradient"])
         self.pbColorModeBox.setCurrentText(
@@ -610,8 +624,7 @@ class DeadlinerDialog(QDialog):
         )
         self.pbColorModeBox.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         prem_form.addRow("Bar color:", self.pbColorModeBox)
-    
-        # ---- Color swatches (appear under Solid/Gradient) ----
+
         def _make_swatch_button(hex_color: str) -> QPushButton:
             b = QPushButton("")
             b.setFixedSize(34, 18)
@@ -626,7 +639,7 @@ class DeadlinerDialog(QDialog):
                 "QPushButton:hover { border: 1px solid rgba(0,0,0,0.6); }"
             )
             return b
-    
+
         def _pick_into_button(btn: QPushButton, initial_hex: str) -> str:
             current = QColor(initial_hex if initial_hex else "#22C55E")
             col = QColorDialog.getColor(current, self, "Pick color")
@@ -643,12 +656,10 @@ class DeadlinerDialog(QDialog):
                 )
                 return hx
             return initial_hex
-    
-        # Storage used by on_accept()
+
         self._pb_solid_hex = solid.upper()
-        self._pb_grad_hexes = [c.upper() for c in grad_list]  # len 2-3
-    
-        # Solid row (one swatch)
+        self._pb_grad_hexes = [c.upper() for c in grad_list]
+
         self.pbSolidSwatch = _make_swatch_button(self._pb_solid_hex)
         self._pb_solid_row = QWidget()
         solid_row = self._pb_solid_row
@@ -657,30 +668,24 @@ class DeadlinerDialog(QDialog):
         solid_l.setSpacing(8)
         solid_l.addWidget(self.pbSolidSwatch, 0)
         solid_l.addStretch(1)
-    
         self._pb_solid_label = QLabel("Solid color:")
         prem_form.addRow(self._pb_solid_label, solid_row)
-    
-        def _on_pick_solid() -> None:
-            self._pb_solid_hex = _pick_into_button(self.pbSolidSwatch, self._pb_solid_hex)
-    
-        self.pbSolidSwatch.clicked.connect(_on_pick_solid)
-    
-        # Gradient row (2-3 swatches + add/remove stop)
+        self.pbSolidSwatch.clicked.connect(
+            lambda: setattr(self, "_pb_solid_hex", _pick_into_button(self.pbSolidSwatch, self._pb_solid_hex))
+        )
+
         self.pbGradSw1 = _make_swatch_button(self._pb_grad_hexes[0])
         self.pbGradSw2 = _make_swatch_button(self._pb_grad_hexes[1])
         self.pbGradSw3 = _make_swatch_button(
             self._pb_grad_hexes[2] if len(self._pb_grad_hexes) == 3 else "#22C55E"
         )
-    
         self.pbGradAddBtn = QPushButton("+")
         self.pbGradAddBtn.setFixedHeight(20)
         self.pbGradAddBtn.setCursor(Qt.CursorShape.PointingHandCursor)
-    
         self.pbGradDelBtn = QPushButton("–")
         self.pbGradDelBtn.setFixedHeight(20)
         self.pbGradDelBtn.setCursor(Qt.CursorShape.PointingHandCursor)
-    
+
         self._pb_grad_row = QWidget()
         grad_row = self._pb_grad_row
         grad_l = QHBoxLayout(grad_row)
@@ -693,30 +698,29 @@ class DeadlinerDialog(QDialog):
         grad_l.addWidget(self.pbGradAddBtn, 0)
         grad_l.addWidget(self.pbGradDelBtn, 0)
         grad_l.addStretch(1)
-    
+
         self._pb_grad_label = QLabel("Gradient:")
         prem_form.addRow(self._pb_grad_label, grad_row)
-    
+
         def _sync_grad_buttons() -> None:
             has3 = (len(self._pb_grad_hexes) == 3)
             self.pbGradSw3.setVisible(has3)
             self.pbGradDelBtn.setVisible(has3)
             self.pbGradAddBtn.setVisible(not has3)
-    
-        def _on_pick_g1() -> None:
-            self._pb_grad_hexes[0] = _pick_into_button(self.pbGradSw1, self._pb_grad_hexes[0])
-    
-        def _on_pick_g2() -> None:
-            self._pb_grad_hexes[1] = _pick_into_button(self.pbGradSw2, self._pb_grad_hexes[1])
-    
-        def _on_pick_g3() -> None:
+
+        self.pbGradSw1.clicked.connect(
+            lambda: self._pb_grad_hexes.__setitem__(0, _pick_into_button(self.pbGradSw1, self._pb_grad_hexes[0]))
+        )
+        self.pbGradSw2.clicked.connect(
+            lambda: self._pb_grad_hexes.__setitem__(1, _pick_into_button(self.pbGradSw2, self._pb_grad_hexes[1]))
+        )
+
+        def _pick_g3() -> None:
             if len(self._pb_grad_hexes) == 3:
                 self._pb_grad_hexes[2] = _pick_into_button(self.pbGradSw3, self._pb_grad_hexes[2])
-    
-        self.pbGradSw1.clicked.connect(_on_pick_g1)
-        self.pbGradSw2.clicked.connect(_on_pick_g2)
-        self.pbGradSw3.clicked.connect(_on_pick_g3)
-    
+
+        self.pbGradSw3.clicked.connect(_pick_g3)
+
         def _add_stop() -> None:
             if len(self._pb_grad_hexes) == 2:
                 self._pb_grad_hexes.append(self._pb_grad_hexes[1])
@@ -730,59 +734,63 @@ class DeadlinerDialog(QDialog):
                     "QPushButton:hover { border: 1px solid rgba(0,0,0,0.6); }"
                 )
             _sync_grad_buttons()
-    
+
         def _del_stop() -> None:
             if len(self._pb_grad_hexes) == 3:
                 self._pb_grad_hexes = self._pb_grad_hexes[:2]
             _sync_grad_buttons()
-    
+
         self.pbGradAddBtn.clicked.connect(_add_stop)
         self.pbGradDelBtn.clicked.connect(_del_stop)
-    
+
         def _update_color_rows() -> None:
             m = self.pbColorModeBox.currentText().lower()
-    
-            if m == "solid":
-                self._pb_solid_label.setVisible(True)
-                self._pb_solid_row.setVisible(True)
-                self._pb_grad_label.setVisible(False)
-                self._pb_grad_row.setVisible(False)
-            elif m == "gradient":
-                self._pb_solid_label.setVisible(False)
-                self._pb_solid_row.setVisible(False)
-                self._pb_grad_label.setVisible(True)
-                self._pb_grad_row.setVisible(True)
-            else:  # auto
-                self._pb_solid_label.setVisible(False)
-                self._pb_solid_row.setVisible(False)
-                self._pb_grad_label.setVisible(False)
-                self._pb_grad_row.setVisible(False)
-    
+            self._pb_solid_label.setVisible(m == "solid")
+            self._pb_solid_row.setVisible(m == "solid")
+            self._pb_grad_label.setVisible(m == "gradient")
+            self._pb_grad_row.setVisible(m == "gradient")
+
         self.pbColorModeBox.currentTextChanged.connect(lambda _t: _update_color_rows())
         _sync_grad_buttons()
         _update_color_rows()
-    
-        # Celebration (premium)
-        self.showCelebrationCheckbox = _bool_box(getattr(self.db, "show_celebration", True))
-        self.showCelebrationCheckbox.setToolTip(
-            "Premium: plays a fast rainbow animation (~3 seconds) the FIRST time you reach 100%\n"
-            "of today's target while reviewing (per deck, per day)."
+
+        # Background style controls (premium)
+        bg_cfg = self.db.db.get("deckline_background", {}) if hasattr(self.db, "db") else {}
+        if not isinstance(bg_cfg, dict):
+            bg_cfg = {}
+        self._bg_hex = str(bg_cfg.get("color", "#3C3C3C") or "#3C3C3C").upper()
+        self._bg_border_hex = str(bg_cfg.get("border_color", "#FFFFFF") or "#FFFFFF").upper()
+        bg_alpha = int(bg_cfg.get("opacity", 55) or 55)
+        bg_alpha = max(10, min(95, bg_alpha))
+
+        self.bgColorSwatch = _make_swatch_button(self._bg_hex)
+        self.bgColorSwatch.clicked.connect(
+            lambda: setattr(self, "_bg_hex", _pick_into_button(self.bgColorSwatch, self._bg_hex))
         )
+        prem_form.addRow("Background color:", self.bgColorSwatch)
+
+        self.bgBorderSwatch = _make_swatch_button(self._bg_border_hex)
+        self.bgBorderSwatch.clicked.connect(
+            lambda: setattr(self, "_bg_border_hex", _pick_into_button(self.bgBorderSwatch, self._bg_border_hex))
+        )
+        prem_form.addRow("Border color:", self.bgBorderSwatch)
+
+        self.bgOpacitySpin = QSpinBox()
+        self.bgOpacitySpin.setRange(10, 95)
+        self.bgOpacitySpin.setSuffix("%")
+        self.bgOpacitySpin.setValue(bg_alpha)
+        self.bgOpacitySpin.setToolTip("Controls transparency for deck cards + topbar.")
+        prem_form.addRow("Background transparency:", self.bgOpacitySpin)
+
+        self.showCelebrationCheckbox = _bool_box(getattr(self.db, "show_celebration", True))
         prem_form.addRow("Show celebration:", self.showCelebrationCheckbox)
-        
-        # Streaks (premium - shown inside Feedback tab)
         self.streaksCheckbox = _bool_box(self.db.enable_streaks)
         prem_form.addRow("Enable streaks:", self.streaksCheckbox)
-        
-            
-        # Lock whole section if free
+
         if not is_premium:
             lock_tip = "Unlock Premium to use this feature."
-            
-            # Force visual state for free users (show unchecked)
             if getattr(self, "streaksCheckbox", None):
                 self.streaksCheckbox.setChecked(False)
-
             for w in (
                 self.pbColorModeBox,
                 self.pbSolidSwatch,
@@ -791,6 +799,9 @@ class DeadlinerDialog(QDialog):
                 self.pbGradSw3,
                 self.pbGradAddBtn,
                 self.pbGradDelBtn,
+                self.bgColorSwatch,
+                self.bgBorderSwatch,
+                self.bgOpacitySpin,
                 self.showCelebrationCheckbox,
                 self.streaksCheckbox,
             ):
@@ -799,11 +810,12 @@ class DeadlinerDialog(QDialog):
                     w.setToolTip(lock_tip)
                 except Exception:
                     pass
-    
+
         outer.addWidget(premiumGroup)
         outer.addStretch(1)
-    
-        self.tabs.addTab(tab, "Feedback")
+        idx = self.tabs.addTab(tab, "Visuals" if is_premium else "🔒 Visuals")
+        if not is_premium:
+            self.tabs.setTabToolTip(idx, "Unlock Premium to customize visuals.")
 
 
 
@@ -1206,6 +1218,11 @@ class DeadlinerDialog(QDialog):
                     "solid": str(solid),
                     "gradient": [str(x) for x in grad[:3]],
                 }
+                self.db.db["deckline_background"] = {
+                    "color": str(getattr(self, "_bg_hex", "#3C3C3C")),
+                    "opacity": int(self.bgOpacitySpin.value()) if getattr(self, "bgOpacitySpin", None) else 55,
+                    "border_color": str(getattr(self, "_bg_border_hex", "#FFFFFF")),
+                }
             else:
                 # Free users: keep consistent defaults
                 self.db.show_celebration = False
@@ -1214,6 +1231,11 @@ class DeadlinerDialog(QDialog):
                     "mode": "auto",
                     "solid": "#22C55E",
                     "gradient": ["#EF4444", "#F59E0B", "#22C55E"],
+                }
+                self.db.db["deckline_background"] = {
+                    "color": "#3C3C3C",
+                    "opacity": 55,
+                    "border_color": "#FFFFFF",
                 }
 
     

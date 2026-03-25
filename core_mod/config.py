@@ -146,6 +146,14 @@ class DeadlineDb:
                 "gradient": ["#EF4444", "#F59E0B", "#22C55E"],
             },
         )
+        self.db.setdefault(
+            "deckline_background",
+            {
+                "color": "#3C3C3C",
+                "opacity": 55,
+                "border_color": "#FFFFFF",
+            },
+        )
 
         self.deadlines = self.db.get("deadlines", {})
 
