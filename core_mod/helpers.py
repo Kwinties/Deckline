@@ -849,6 +849,8 @@ def calculate_current_streak(entries: list[dict]) -> int:
     - Only days with target > 0 count as "streak days".
     - If target == 0 (rest/skip day, pending), the streak is frozen (does not increase, does not break).
     - If a day with target > 0 exists and done < target, streak breaks.
+    - Exception: today's unfinished study day does not immediately break the
+      visible streak; we keep showing the previous streak until tomorrow.
     - If a date is missing from the log, we break (we can't know if it was a skip/vacation day).
     """
     if not entries:
@@ -899,6 +901,13 @@ def calculate_current_streak(entries: list[dict]) -> int:
         # study day: must meet target
         if done >= target:
             streak += 1
+            cur = cur - timedelta(days=1)
+            continue
+
+        # Keep current streak visible during today's unfinished target.
+        # If the target remains unmet, this same log row will be "yesterday"
+        # tomorrow and then break the streak as normal.
+        if cur == today:
             cur = cur - timedelta(days=1)
             continue
 
