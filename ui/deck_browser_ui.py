@@ -31,6 +31,17 @@ from ..core import (
 addon_package = mw.addonManager.addonFromModule(__name__)
 base_url = f"/_addons/{addon_package}"
 
+def _hex_to_rgb_tuple(value: str) -> tuple:
+    s = (value or "").strip().lstrip("#")
+    if len(s) == 3:
+        s = "".join(ch * 2 for ch in s)
+    if len(s) != 6:
+        return (60, 60, 60)
+    try:
+        return (int(s[0:2], 16), int(s[2:4], 16), int(s[4:6], 16))
+    except Exception:
+        return (60, 60, 60)
+
 
 def _html_title(text: str) -> str:
     """
@@ -371,6 +382,20 @@ def display_footer(deck_browser, content) -> None:
     # Default so we never crash even if the HTML is built earlier by accident
     focus_label = "All"
 
+    bg_cfg = db.db.get("deckline_background", {}) if hasattr(db, "db") else {}
+    if not isinstance(bg_cfg, dict):
+        bg_cfg = {}
+    bg_hex = str(bg_cfg.get("color", "#3C3C3C") or "#3C3C3C")
+    bg_border_hex = str(bg_cfg.get("border_color", "#FFFFFF") or "#FFFFFF")
+    bg_opacity_pct = int(bg_cfg.get("opacity", 55) or 55)
+    bg_opacity_pct = max(10, min(95, bg_opacity_pct))
+    bg_alpha_card = bg_opacity_pct / 100.0
+    bg_alpha_top = max(0.08, min(0.95, bg_alpha_card * 0.82))
+    bg_rgb = _hex_to_rgb_tuple(bg_hex)
+    border_rgb = _hex_to_rgb_tuple(bg_border_hex)
+    bg_card_css = f"rgba({bg_rgb[0]},{bg_rgb[1]},{bg_rgb[2]},{bg_alpha_card:.2f})"
+    bg_top_css = f"rgba({bg_rgb[0]},{bg_rgb[1]},{bg_rgb[2]},{bg_alpha_top:.2f})"
+    bg_border_css = f"rgba({border_rgb[0]},{border_rgb[1]},{border_rgb[2]},0.06)"
 
     res = f"<link rel='stylesheet' type='text/css' href='{base_url}/deckline.css'>"
 
@@ -477,8 +502,8 @@ def display_footer(deck_browser, content) -> None:
 
         ".deckline-cards{margin:14px auto 8px;max-width:600px;}"
         ".deckline-topbar{margin:0 0 8px 0;padding:8px 10px;border-radius:16px;"
-        "background:linear-gradient(180deg,rgba(60,60,60,.45),rgba(45,45,45,.45));"
-        "border:1px solid rgba(255,255,255,.06);box-shadow:0 6px 14px rgba(0,0,0,.28);}"
+        f"background:linear-gradient(180deg,{bg_top_css},{bg_top_css});"
+        f"border:1px solid {bg_border_css};box-shadow:0 6px 14px rgba(0,0,0,.28);}}"
 
         ".deckline-topbar-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap;}"
         ".deckline-stats{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;font-size:12px;color:rgba(169,175,183,.95);"
@@ -496,8 +521,8 @@ def display_footer(deck_browser, content) -> None:
 
         ".deckline-card{display:flex;align-items:center;justify-content:space-between;gap:16px;"
         "padding:16px 18px;margin:0 0 10px 0;border-radius:18px;"
-        "background:linear-gradient(180deg,rgba(60,60,60,.55),rgba(45,45,45,.55));"
-        "border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 22px rgba(0,0,0,.35);}"
+        f"background:linear-gradient(180deg,{bg_card_css},{bg_card_css});"
+        f"border:1px solid {bg_border_css};box-shadow:0 10px 22px rgba(0,0,0,.35);}}"
 
         ".deckline-left{min-width:0;flex:1 1 auto;padding-top:1px;}"
         ".deckline-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:6px;"
