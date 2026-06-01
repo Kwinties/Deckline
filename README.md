@@ -1,4 +1,4 @@
-<h2>&#128216; Deckline Documentation (v2.2)</h2>
+<h2>&#128216; Deckline Documentation (v2.3)</h2>
 
 <p>
   Deckline helps you finish Anki decks before a chosen <b>deadline</b> by turning remaining work into a clear
@@ -16,8 +16,8 @@
   <li>Shows <b>daily progress</b> in Deck Overview and on the Review screen.</li>
   <li>Shows <b>overall deadline progress</b> in the Deck Browser.</li>
   <li>Includes subdecks automatically in targets, progress, and today counts.</li>
-  <li>Supports start dates, skipped weekends, vacation/time-off days, custom display names, and expected total cards.</li>
-  <li>Adds Timeline, smart bottom-bar feedback, a metrics dashboard, charts, heatmaps, Milestones, appearance controls, and Pomodoro surfaces.</li>
+  <li>Supports start dates, skipped weekends, vacation/time-off days, custom display names, expected total cards, and configurable day-off learning amounts.</li>
+  <li>Adds Deckline Home, Timeline, smart bottom-bar feedback, a metrics dashboard, charts, heatmaps, Milestones, appearance controls, and Pomodoro surfaces.</li>
 </ul>
 
 <h3>&#128683; What Deckline does not do</h3>
@@ -80,24 +80,31 @@
   <li><b>Behind filter</b> - show only decks behind target.</li>
   <li><b>Timeline panel</b> - inspect deadlines and custom timeline dates.</li>
   <li><b>Pomodoro panel</b> - start, pause, and reset study blocks when Premium is unlocked.</li>
-  <li><b>Stats button</b> - open the metrics dashboard, chart views, and heatmaps.</li>
+  <li><b>Stats button</b> - open Deckline Home, the metrics dashboard, chart views, and heatmaps.</li>
 </ul>
 
-<h4>2) Main-screen bottom bar</h4>
+<h4>2) Deckline Home</h4>
+<ul>
+  <li>Gives you a cleaner home view for checking progress, planning, and recent deadline context.</li>
+  <li>Lives inside the polished stats window and can also open as an optional popup.</li>
+</ul>
+
+<h4>3) Main-screen bottom bar</h4>
 <ul>
   <li>Shows a calm smart message when there is no urgent deadline feedback.</li>
   <li>Can rotate curated study facts by category.</li>
   <li>Can expose Timeline and Pomodoro controls directly from the main screen.</li>
+  <li>Can be hidden from Deckline settings when you want a simpler review setup.</li>
 </ul>
 
-<h4>3) Deck Overview - Daily Deckline Progress</h4>
+<h4>4) Deck Overview - Daily Deckline Progress</h4>
 <ul>
   <li>Shows daily progress as <b>done today / target today</b>.</li>
   <li>Shows phase context for NEW -> cut-off or REVIEW -> deadline.</li>
   <li>Shows explicit rest-day status when the target is 0.</li>
 </ul>
 
-<h4>4) Review screen - bottom progress bar</h4>
+<h4>5) Review screen - bottom progress bar</h4>
 <ul>
   <li>Updates while reviewing.</li>
   <li>Shows target and phase context in the tooltip.</li>
@@ -106,18 +113,25 @@
 
 <hr>
 
-<h3>&#128200; Metrics dashboard, charts, and heatmaps</h3>
+<h3>&#128200; Deckline Home, metrics dashboard, charts, and heatmaps</h3>
+
+<h4>Deckline Home</h4>
+<ul>
+  <li>v2.3 adds Deckline Home as a cleaner place to check progress and planning.</li>
+  <li>Deckline Home is available inside the stats window and can be enabled as a popup from Deckline settings.</li>
+</ul>
 
 <h4>Metrics dashboard</h4>
 <ul>
-  <li>v2.2 reworks and optimizes the dashboard for a cleaner, faster overview.</li>
   <li>Shows your deadline activity, progress patterns, archive context, and Milestones in one place.</li>
+  <li>Keeps the cleaner, faster dashboard experience introduced in Deckline V2.</li>
 </ul>
 
 <h4>Chart tab</h4>
 <ul>
   <li>Shows recent done-vs-target progress.</li>
   <li>Supports totals across multiple deadline decks.</li>
+  <li>Premium chart views now include an <b>all</b> timeframe for all decks, instead of only for a specific deck.</li>
   <li>Hover any chart day to see today's progress and daily target.</li>
 </ul>
 
@@ -167,7 +181,7 @@
   <b>Global:</b> Tools -> <b>Deckline settings</b>
 </p>
 <p>
-  v2.2 redesigns settings into a more intuitive and compact layout, while keeping the same per-deck and global split.
+  Settings keep the per-deck and global split, with v2.3 adding more control over day-off targets, Deckline Home, the bottom bar, and Premium status colors.
 </p>
 
 <h4>Deadline</h4>
@@ -177,6 +191,7 @@
   <li>Use expected total cards to keep planning stable for growing decks.</li>
   <li>Use a daily target override when you want a fixed manual target.</li>
   <li>Skip weekends when you want rest days built into the plan.</li>
+  <li>Choose how many cards Deckline schedules on a day off, either as a percentage or as a fixed number of cards.</li>
 </ul>
 
 <h4>Feedback</h4>
@@ -184,12 +199,14 @@
   <li>Show or hide progress bars in Overview and Review.</li>
   <li>Configure smart messages, streak feedback, and phase-specific time multipliers.</li>
   <li>Optionally show smart messages per deck instead of only in the bottom bar.</li>
+  <li>Optionally hide the main-screen bottom bar for a cleaner interface.</li>
 </ul>
 
 <h4>Appearance</h4>
 <ul>
   <li>Choose Deckline theme behavior for cards, progress bars, stats, and browser surfaces.</li>
   <li>Adjust card opacity and visual style.</li>
+  <li>Premium users can customize the status colors used in the Deckline card.</li>
   <li>Follow Deckline Theme uses a fixed deck-browser size to avoid overlap with long deck names.</li>
 </ul>
 
@@ -197,24 +214,28 @@
 <ul>
   <li>Manage Timeline, Pomodoro, and bottom-bar settings from one place.</li>
   <li>Choose bottom-bar study fact categories and rotation behavior.</li>
+  <li>Enable the optional Deckline Home popup.</li>
 </ul>
 
 <h4>Premium</h4>
 <ul>
   <li>Paste your premium code to unlock Premium features.</li>
   <li>Label deadline decks with a favorite or fitting icon from the Premium icon pack.</li>
+  <li>Customize Deckline card status colors.</li>
+  <li>Use the all-decks <b>all</b> timeframe in the chart section.</li>
   <li>Premium in Deckline V2 unlocks Pomodoro, richer appearance controls, vacation/time-off planning, unlimited deadlines, streaks, premium visuals, and deeper chart views.</li>
 </ul>
 
 <hr>
 
-<h3>&#128640; New in v2.2</h3>
+<h3>&#128640; New in v2.3</h3>
 <ul>
-  <li><b>Premium deck icon pack:</b> label decks with a favorite or fitting icon.</li>
-  <li><b>Metrics dashboard reworked:</b> the dashboard is cleaner, faster, and more focused.</li>
-  <li><b>Achievements are now Milestones:</b> the old achievements experience has been rebranded into cleaner, more satisfying milestones.</li>
-  <li><b>Archive remove button fixed:</b> removing archived items works reliably again.</li>
-  <li><b>Settings redesigned:</b> settings now use a more intuitive and compact layout.</li>
+  <li><b>Day-off learning amount:</b> choose how many cards Deckline schedules on a day off, either as a percentage or as a fixed number.</li>
+  <li><b>Deckline Home:</b> check progress and planning from a cleaner home view inside the polished stats window.</li>
+  <li><b>Optional Deckline Home popup:</b> enable Deckline Home as a popup from Deckline settings.</li>
+  <li><b>Hide bottom bar setting:</b> hide the bottom bar when you want a simpler, less busy review interface.</li>
+  <li><b>Premium status colors:</b> customize the status colors used in the Deckline card.</li>
+  <li><b>Premium all-decks chart timeframe:</b> use an <b>all</b> timeframe for all decks instead of only for a specific deck.</li>
 </ul>
 
 <hr>
@@ -223,6 +244,7 @@
 <ol>
   <li>Choose the current phase: NEW until cut-off, then REVIEW until deadline.</li>
   <li>Exclude rest days such as skipped weekends and vacation/time-off days.</li>
+  <li>Apply the configured day-off learning amount when a rest day should still include some cards.</li>
   <li>Calculate the stable daily quota from remaining work and remaining study days.</li>
   <li>Compare done today against target today.</li>
   <li>Assign a status badge such as ON TRACK, BEHIND, REST DAY, or NOT STARTED.</li>
@@ -253,8 +275,8 @@
 <ul>
   <li><b>Overview bar missing:</b> check Feedback -> Show daily progress bar in deck overview.</li>
   <li><b>Review bar missing:</b> check Feedback -> Show daily progress bar in review screen.</li>
-  <li><b>Targets seem off:</b> verify start date, cut-off, deadline, skipped weekends, vacation days, and expected total cards.</li>
-  <li><b>Layout looks cramped:</b> check Appearance settings and update to v2.2 for the latest Deck Browser and settings layout fixes.</li>
+  <li><b>Targets seem off:</b> verify start date, cut-off, deadline, skipped weekends, vacation days, day-off learning amount, and expected total cards.</li>
+  <li><b>Layout looks cramped:</b> check Appearance settings and update to v2.3 for the latest Deck Browser, settings, and chart updates.</li>
   <li><b>Pomodoro unavailable:</b> Pomodoro is a Premium feature and must be enabled in Deckline settings.</li>
 </ul>
 
@@ -275,7 +297,8 @@
 <ul>
   <li>Set your cut-off a few days before your final deadline.</li>
   <li>Use expected total cards when your deck is still growing.</li>
-  <li>Use skipped weekends and vacation/time-off days for realistic targets.</li>
+  <li>Use skipped weekends, vacation/time-off days, and day-off learning amounts for realistic targets.</li>
   <li>Use Timeline for exams, milestones, and cross-deck deadline pressure.</li>
+  <li>Use Deckline Home for a quick planning check before reviewing.</li>
   <li>Use the review bar as your done-for-today indicator.</li>
 </ul>
