@@ -1,4 +1,4 @@
-<h2>&#128216; Deckline Documentation (v2.3)</h2>
+<h2>&#128216; Deckline Documentation (v2.4)</h2>
 
 <p>
   Deckline helps you finish Anki decks before a chosen <b>deadline</b> by turning remaining work into a clear
@@ -18,6 +18,7 @@
   <li>Includes subdecks automatically in targets, progress, and today counts.</li>
   <li>Supports start dates, skipped weekends, vacation/time-off days, custom display names, expected total cards, and configurable day-off learning amounts.</li>
   <li>Adds Deckline Home, Timeline, smart bottom-bar feedback, a metrics dashboard, charts, heatmaps, Milestones, appearance controls, and Pomodoro surfaces.</li>
+  <li>Creates a <b>smart filtered deck</b> with exactly the cards needed to hit your daily target — click the <b>NEW</b> or <b>REVIEW</b> phase button on any deck card in Deckline Home.</li>
 </ul>
 
 <h3>&#128683; What Deckline does not do</h3>
@@ -65,7 +66,7 @@
   <li><b>Deck name</b> with click-through to Overview.</li>
   <li><b>Optional deck icon</b> from the Premium icon pack.</li>
   <li><b>Deadline status</b> such as Today, in X days, Overdue, or Not started.</li>
-  <li><b>Phase</b> for the current part of the plan.</li>
+  <li><b>Phase</b> for the current part of the plan — click <b>NEW</b> or <b>REVIEW</b> to instantly create a smart filtered deck.</li>
   <li><b>Pending</b> cards for the current flow, excluding suspended cards.</li>
   <li><b>Today</b> as done today / target today.</li>
   <li><b>Overall progress</b> from 0-100%.</li>
@@ -85,8 +86,8 @@
 
 <h4>2) Deckline Home</h4>
 <ul>
-  <li>Gives you a cleaner home view for checking progress, planning, and recent deadline context.</li>
-  <li>Lives inside the polished stats window and can also open as an optional popup.</li>
+  <li>A modern, distraction-free home view redesigned in v2.4 with a <b>clear daily plan</b> and a glance at your <b>weekly rhythm</b>.</li>
+  <li>Lives inside the stats window and can also open as an optional popup.</li>
 </ul>
 
 <h4>3) Main-screen bottom bar</h4>
@@ -117,8 +118,8 @@
 
 <h4>Deckline Home</h4>
 <ul>
-  <li>v2.3 adds Deckline Home as a cleaner place to check progress and planning.</li>
-  <li>Deckline Home is available inside the stats window and can be enabled as a popup from Deckline settings.</li>
+  <li>Redesigned in v2.4 as a modern, distraction-free home view with a clear daily plan and a weekly rhythm overview.</li>
+  <li>Available inside the stats window and as an optional popup from Deckline settings.</li>
 </ul>
 
 <h4>Metrics dashboard</h4>
@@ -131,7 +132,7 @@
 <ul>
   <li>Shows recent done-vs-target progress.</li>
   <li>Supports totals across multiple deadline decks.</li>
-  <li>Premium chart views now include an <b>all</b> timeframe for all decks, instead of only for a specific deck.</li>
+  <li>Premium chart views include an <b>all</b> timeframe for all decks.</li>
   <li>Hover any chart day to see today's progress and daily target.</li>
 </ul>
 
@@ -180,9 +181,6 @@
   <b>Per deck:</b> Deck Browser -> right-click deck -> <b>Deadline</b><br>
   <b>Global:</b> Tools -> <b>Deckline settings</b>
 </p>
-<p>
-  Settings keep the per-deck and global split, with v2.3 adding more control over day-off targets, Deckline Home, the bottom bar, and Premium status colors.
-</p>
 
 <h4>Deadline</h4>
 <ul>
@@ -206,6 +204,7 @@
 <ul>
   <li>Choose Deckline theme behavior for cards, progress bars, stats, and browser surfaces.</li>
   <li>Adjust card opacity and visual style.</li>
+  <li>Free users can unlock <b>custom icon drawing</b> and <b>card blur/opacity</b> controls via the unlock button.</li>
   <li>Premium users can customize the status colors used in the Deckline card.</li>
   <li>Follow Deckline Theme uses a fixed deck-browser size to avoid overlap with long deck names.</li>
 </ul>
@@ -222,8 +221,28 @@
   <li>Paste your premium code to unlock Premium features.</li>
   <li>Label deadline decks with a favorite or fitting icon from the Premium icon pack.</li>
   <li>Customize Deckline card status colors.</li>
+  <li>Customize review bar visuals: completion effect, after-target behavior, and checkpoints.</li>
   <li>Use the all-decks <b>all</b> timeframe in the chart section.</li>
   <li>Premium in Deckline V2 unlocks Pomodoro, richer appearance controls, vacation/time-off planning, unlimited deadlines, streaks, premium visuals, and deeper chart views.</li>
+</ul>
+
+<hr>
+
+<h3>&#128640; New in v2.4</h3>
+
+<h4>Free</h4>
+<ul>
+  <li><b>Unlock button:</b> free users now get access to custom icon drawing and card blur/opacity controls.</li>
+  <li><b>Reworked Deckline Home:</b> cleaner, modern layout with a clear daily plan and a glance at your weekly rhythm.</li>
+  <li><b>Quick filtered deck:</b> click the <b>NEW</b> or <b>REVIEW</b> phase button on a deck card to instantly create a filtered deck with exactly the cards needed to hit your daily target.</li>
+  <li><b>Performance and UI tweaks</b> across the addon.</li>
+</ul>
+
+<h4>Premium</h4>
+<ul>
+  <li><b>Completion effect:</b> choose a visual effect that plays the moment you hit your daily target.</li>
+  <li><b>After completed target:</b> control how the review bar behaves once your goal is reached.</li>
+  <li><b>Checkpoints:</b> mark milestones along the review bar to track your session progress at a glance.</li>
 </ul>
 
 <hr>
@@ -276,7 +295,7 @@
   <li><b>Overview bar missing:</b> check Feedback -> Show daily progress bar in deck overview.</li>
   <li><b>Review bar missing:</b> check Feedback -> Show daily progress bar in review screen.</li>
   <li><b>Targets seem off:</b> verify start date, cut-off, deadline, skipped weekends, vacation days, day-off learning amount, and expected total cards.</li>
-  <li><b>Layout looks cramped:</b> check Appearance settings and update to v2.3 for the latest Deck Browser, settings, and chart updates.</li>
+  <li><b>Layout looks cramped:</b> check Appearance settings.</li>
   <li><b>Pomodoro unavailable:</b> Pomodoro is a Premium feature and must be enabled in Deckline settings.</li>
 </ul>
 
@@ -302,3 +321,7 @@
   <li>Use Deckline Home for a quick planning check before reviewing.</li>
   <li>Use the review bar as your done-for-today indicator.</li>
 </ul>
+
+<hr>
+
+<p>Found a bug or mistake? Please <a href="https://github.com/Kwinties/Deckline/issues">open an issue on GitHub</a>.</p>
