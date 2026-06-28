@@ -65,12 +65,15 @@
 
 <hr>
 
-<h3>&#128200; Metrics dashboard, charts, heatmaps, and Milestones</h3>
+<h3>&#128200; Stats window</h3>
+<p>Open via the stats button in the topbar. Contains six tabs:</p>
 <ul>
-  <li><b>Dashboard</b> — deadline activity, progress patterns, and archive context in one place.</li>
+  <li><b>Home</b> — daily plan and 7-day weekly rhythm overview.</li>
+  <li><b>Metrics</b> — deadline activity and progress patterns across all your decks.</li>
   <li><b>Chart</b> — recent done-vs-target per deck; Premium adds an all-decks timeframe and full deadline projection.</li>
   <li><b>Heatmap</b> — per-deck study-day history colored by progress against daily targets.</li>
   <li><b>Milestones</b> — satisfying rewards for consistency, without changing Anki scheduling.</li>
+  <li><b>Archive</b> — completed deadlines with their full history.</li>
 </ul>
 
 <hr>
@@ -127,15 +130,6 @@
   <li><b>Completion effect</b> — visual effect when you hit your daily target.</li>
   <li><b>After completed target</b> — control how the review bar behaves once your goal is reached.</li>
   <li><b>Checkpoints</b> — milestones along the review bar for at-a-glance session progress.</li>
-</ul>
-
-<h3>&#128640; New in v2.3</h3>
-<ul>
-  <li>Day-off learning amount (percentage or fixed card count).</li>
-  <li>Deckline Home inside the stats window.</li>
-  <li>Hide bottom bar setting.</li>
-  <li>Premium status colors.</li>
-  <li>Premium all-decks chart timeframe.</li>
 </ul>
 
 <hr>
