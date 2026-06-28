@@ -1,4 +1,4 @@
-<h2>&#128216; Deckline (v2.4)</h2>
+<h2>&#128216; Deckline (v2.4) (Coming soon!)</h2>
 
 <p>
   Deckline helps you finish Anki decks before a chosen <b>deadline</b> by turning remaining work into a clear
