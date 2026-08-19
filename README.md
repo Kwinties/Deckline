@@ -4,9 +4,9 @@
 
 **Smart deadlines for Anki: know exactly how many cards to study today, every day.**
 
-[![Get it on AnkiWeb](ankiweblogo.webp)](https://ankiweb.net/shared/info/1517382883)
-[![GitHub Issues](githublogo.png)](https://github.com/Kwinties/Deckline/issues)
-[![Support on Ko-fi](kofilogo.png)](https://ko-fi.com/s/d708f4b514)
+[![Get it on AnkiWeb](https://img.shields.io/badge/Get%20it%20on-AnkiWeb-3AABDA?style=for-the-badge)](https://ankiweb.net/shared/info/1517382883)
+[![GitHub Issues](https://img.shields.io/badge/GitHub-Issues-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Kwinties/Deckline/issues)
+[![Support on Ko-fi](https://img.shields.io/badge/Support-Ko--fi-FF5A5F?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/s/d708f4b514)
 
 </div>
 
@@ -29,10 +29,6 @@ Deckline helps you finish Anki decks before a chosen **deadline** by turning the
 
 - Does not change Anki's scheduling (FSRS, SM-2, ease, intervals, leeches).
 - Does not force cards to appear. It only reads your collection to calculate targets and feedback.
-
-<div align="center">
-<img src="deckline_heatmap.png" alt="Deckline activity heatmap" width="640">
-</div>
 
 ## Core concepts
 
@@ -61,10 +57,6 @@ Deckline helps you finish Anki decks before a chosen **deadline** by turning the
 | **Main-screen bottom bar** | Smart messages and curated study facts (can be hidden in settings). |
 | **Deck Overview** | Today's progress as *done / target*, with phase and rest-day context. |
 | **Review screen** | A progress bar that updates live while you review, plus (Premium) a completion effect and Gamify mode, and (free) the Add button on your quick filtered decks. |
-
-<div align="center">
-<img src="icondeck.png" alt="Custom deck icon editor" width="640">
-</div>
 
 ## Stats window
 
