@@ -1,195 +1,171 @@
-<h2>&#128216; Deckline (v2.4)</h2>
+<div align="center">
 
-<p>
-  Deckline helps you finish Anki decks before a chosen <b>deadline</b> by turning remaining work into a clear
-  <b>daily target</b>. It shows what to do today, whether you are on pace, and how your deadline progress looks
-  directly inside Anki — without touching Anki's scheduler.
-</p>
+# Deckline
 
-<hr>
+**Smart deadlines for Anki: know exactly how many cards to study today, every day.**
 
-<h3>&#9989; What Deckline does</h3>
-<ul>
-  <li>Creates a <b>deadline-based study plan</b> per deck, split into a NEW phase and REVIEW phase.</li>
-  <li>Converts remaining work into a <b>stable daily quota</b> that adjusts for rest days and day-off targets.</li>
-  <li>Shows <b>daily progress</b> in Deck Overview and on the Review screen.</li>
-  <li>Shows <b>overall deadline progress</b> in the Deck Browser.</li>
-  <li>Includes subdecks automatically in targets, progress, and today counts.</li>
-  <li>Supports start dates, skipped weekends, vacation/time-off days, custom display names, expected total cards, and daily target overrides.</li>
-  <li>Creates a <b>smart filtered deck</b> with exactly the cards needed to hit your daily target — click the <b>NEW</b> or <b>REVIEW</b> phase button on a deck card.</li>
-</ul>
+[![Get it on AnkiWeb](ankiweblogo.webp)](https://ankiweb.net/shared/info/1517382883)
+[![GitHub Issues](githublogo.png)](https://github.com/Kwinties/Deckline/issues)
+[![Support on Ko-fi](kofilogo.png)](https://ko-fi.com/s/d708f4b514)
 
-<h3>&#128683; What Deckline does not do</h3>
-<ul>
-  <li>Does not change Anki scheduling (FSRS, SM-2, ease, intervals, leeches).</li>
-  <li>Does not force cards to appear — it reads your collection to calculate targets and feedback.</li>
-</ul>
+</div>
 
-<hr>
+---
 
-<h3>&#129504; Core concepts</h3>
+Deckline helps you finish Anki decks before a chosen **deadline** by turning the remaining work into a clear **daily target**. It shows what to do today, whether you're on pace, and how your deadline progress looks, right inside Anki, without touching Anki's own scheduler.
 
-<b>Deadline</b> — the final date you want to finish a deck.<br><br>
+> **Deckline never changes how Anki schedules your cards.** It doesn't touch intervals, ease, leeches, or your algorithm (FSRS or SM-2). It only reads your collection to calculate a plan. Uninstalling Deckline leaves your cards exactly as they are.
 
-<b>Cut-off date</b> — splits the plan into two phases:
-<ul>
-  <li><b>Phase 1: NEW → Cut-off</b> — finish introducing new cards early.</li>
-  <li><b>Phase 2: REVIEW → Deadline</b> — stabilize young cards before the deadline.</li>
-</ul>
+## What Deckline does
 
-<b>Young vs mature</b> — cards become mature at interval ≥ 21 days.<br><br>
+- Creates a **deadline-based study plan** per deck, split into a **NEW** phase and a **REVIEW** phase.
+- Converts remaining work into a **stable daily target** that adjusts for rest days, skipped weekends and vacation/time-off days.
+- Shows **today's progress** on the Deck Overview and the Review screen, and **overall deadline progress** on the Deck Browser.
+- Includes subdecks automatically in targets, progress and today's counts.
+- Supports start dates, custom display names, expected total cards, and manual daily target overrides.
+- Builds a **smart filtered deck** with exactly the cards you still need to hit today's target. Click the **NEW** or **REVIEW** phase button on a deck card, or the deck's name once that deck exists. If you run low before reaching today's target, an **Add** button appears next to *More* in the reviewer to top the deck back up with one click.
 
-<b>Done today</b> — counts distinct cards reviewed today, not raw revlog actions.
+## What Deckline does *not* do
 
-<hr>
+- Does not change Anki's scheduling (FSRS, SM-2, ease, intervals, leeches).
+- Does not force cards to appear. It only reads your collection to calculate targets and feedback.
 
-<h3>&#129513; Where you see Deckline</h3>
+<div align="center">
+<img src="deckline_heatmap.png" alt="Deckline activity heatmap" width="640">
+</div>
 
-<h4>Deck Browser — deadline cards</h4>
-<p>Each deadline deck appears as a card showing deck name, deadline status, phase (click <b>NEW</b> or <b>REVIEW</b> to create a smart filtered deck), pending cards, today's progress, overall progress, status badge, and an optional smart message.</p>
+## Core concepts
 
-<h4>Deckline Home</h4>
-<p>A modern web-based home view inside the stats window. Shows a <b>clear plan for today</b>, a <b>7-day weekly rhythm</b> with upcoming targets, a forecast of deadlines ahead, and attention cards for any deck that needs focus. Open it via the stats button in the topbar.</p>
+- **Deadline**: the final date you want to finish a deck.
+- **Cut-off date**: splits the plan into two phases:
+  - **Phase 1: NEW → Cut-off**: finish introducing new cards early.
+  - **Phase 2: REVIEW → Deadline**: get young cards to stick before the deadline.
+- **Young vs. mature**: a card becomes mature once its interval reaches the **maturity threshold** (21 days by default, adjustable per deadline under *Planning → Mature after*).
+- **Done today**: in the NEW phase, this is the new cards you've introduced today. In the REVIEW phase, a card only counts once it actually **matures** today (reaches that threshold). Cards you're still relearning don't inflate your progress, so the target always reflects genuine ground gained.
+- **Mature after**: one number that sets both sides of REVIEW-phase progress. Cards below it are what's still left to do, and reaching it is what counts as done. Lower it for short deadlines (see the FAQ).
 
-<h4>Topbar (Deck Browser)</h4>
-<p>Focus mode, sort options, behind filter, Timeline panel, Pomodoro panel, and the stats button.</p>
+## Getting started
 
-<h4>Main-screen bottom bar</h4>
-<p>Smart messages, curated study facts, and optional Timeline/Pomodoro controls. Can be hidden from settings.</p>
+1. Install Deckline from AnkiWeb (badge above) and restart Anki.
+2. On the deck list, right-click a deck and choose **Deadline** (or open **Tools → Deckline settings** for the global view).
+3. Set a deadline date and, if the deck has subdecks, whether they should count toward it.
+4. Deckline now shows today's target on the deck list. Click the **NEW** or **REVIEW** badge on a deck card to instantly build a filtered "Today's Target" deck sized to exactly what you still need, and start studying.
 
-<h4>Deck Overview</h4>
-<p>Daily progress as <b>done / target</b> with phase and rest-day context.</p>
+## Where you see Deckline
 
-<h4>Review screen</h4>
-<p>A bottom progress bar that updates while reviewing, showing your daily target and phase context — with Premium: completion effects, after-target behavior, checkpoints, and Pomodoro timing.</p>
+| Location | What it shows |
+| --- | --- |
+| **Deck Browser cards** | Deck name, deadline status, phase badge (click to build a quick filtered deck), pending cards, today's progress, overall progress, and a status pill (On Track, Behind, Rest, Window closed, Complete). |
+| **Deckline Home** | A dashboard inside the stats window: today's plan, a 7-day weekly rhythm, upcoming deadlines, and decks that need attention. Open it from the stats button in the topbar. |
+| **Topbar** | Focus mode, sort options, a "behind only" filter, and the Timeline / Pomodoro panels. |
+| **Main-screen bottom bar** | Smart messages and curated study facts (can be hidden in settings). |
+| **Deck Overview** | Today's progress as *done / target*, with phase and rest-day context. |
+| **Review screen** | A progress bar that updates live while you review, plus (Premium) a completion effect and Gamify mode, and (free) the Add button on your quick filtered decks. |
 
-<hr>
+<div align="center">
+<img src="icondeck.png" alt="Custom deck icon editor" width="640">
+</div>
 
-<h3>&#128200; Stats window</h3>
-<p>Open via the stats button in the topbar. Contains six tabs:</p>
-<ul>
-  <li><b>Home</b> — daily plan and 7-day weekly rhythm overview.</li>
-  <li><b>Metrics</b> — deadline activity and progress patterns across all your decks.</li>
-  <li><b>Chart</b> — recent done-vs-target per deck; Premium adds an all-decks timeframe and full deadline projection.</li>
-  <li><b>Heatmap</b> — per-deck study-day history colored by progress against daily targets.</li>
-  <li><b>Milestones</b> — satisfying rewards for consistency, without changing Anki scheduling.</li>
-  <li><b>Archive</b> — completed deadlines with their full history.</li>
-</ul>
+## Stats window
 
-<hr>
+Open it from the stats button in the topbar:
 
-<h3>&#128197; Timeline</h3>
-<p>Shows all deadlines, cut-off dates, and custom dates (exams, trips, milestones) in one range view.</p>
+- **Home**: daily plan and 7-day weekly rhythm.
+- **Metrics**: deadline activity and progress patterns across all your decks.
+- **Chart**: recent done-vs-target per deck (Premium adds an all-decks timeframe and a full deadline projection).
+- **Heatmap**: per-deck study-day history, colored by progress against your daily targets.
+- **Milestones**: rewards for consistency, purely cosmetic and never affecting scheduling.
+- **Archive**: completed deadlines with their full history.
 
-<h3>&#9201;&#65039; Pomodoro <i>(Premium)</i></h3>
-<p>Timers in Deckline surfaces with work/break controls and review-screen timing feedback. Resets overnight.</p>
+## Timeline & Pomodoro
 
-<hr>
+- **Timeline** shows all your deadlines, cut-off dates, and custom dates (exams, trips, milestones) in one range view.
+- **Pomodoro** *(Premium)* adds a focus/break timer with review-screen timing feedback, configurable break warnings, and the option to turn it off entirely.
 
-<h3>&#9881;&#65039; Settings</h3>
-<p><b>Per deck:</b> Deck Browser → right-click deck → <b>Deadline</b> &nbsp;|&nbsp; <b>Global:</b> Tools → <b>Deckline settings</b></p>
+## Settings
 
-<table>
-  <tr><th>Page</th><th>What you configure</th></tr>
-  <tr><td><b>Schedule</b></td><td>Deck name, start date, cut-off date, deadline.</td></tr>
-  <tr><td><b>Planning</b></td><td>Expected total cards, daily target override, day rollover, days off.</td></tr>
-  <tr><td><b>Progress</b></td><td>Progress bar visibility, time-estimate multipliers, streaks <i>(Premium)</i>.</td></tr>
-  <tr><td><b>Plugins</b></td><td>Timeline, Pomodoro, bottom bar, review messages, deck card layout.</td></tr>
-  <tr><td><b>Visuals</b></td><td>Theme, card styling, icon customization (unlock button for free users), status colors <i>(Premium)</i>, review bar effects <i>(Premium)</i>.</td></tr>
-  <tr><td><b>Premium</b></td><td>License code entry and feature overview.</td></tr>
-</table>
+Per deck: right-click a deck → **Deadline**. Global: **Tools → Deckline settings**.
 
-<hr>
+Every page was rebuilt for v2.5: color-coded sections, a short explanation under each control, and (for Pomodoro) a rhythm strip you can read at a glance.
 
-<h3>&#11088; Premium features</h3>
-<ul>
-  <li>Pomodoro timers in Deckline surfaces.</li>
-  <li>Streak tracking.</li>
-  <li>Vacation/time-off planning.</li>
-  <li>Unlimited deadlines.</li>
-  <li>Custom deck icon pack.</li>
-  <li>Custom status colors.</li>
-  <li>Review bar: completion effect, after-target behavior, and checkpoints.</li>
-  <li>Full deadline projection chart and all-decks timeframe.</li>
-</ul>
+| Page | What you configure |
+| --- | --- |
+| **Schedule** | Deck name, start date, cut-off date, deadline. |
+| **Planning** | Expected total cards, daily target override, day rollover, days off. |
+| **Progress** | Progress bar visibility, time-estimate multipliers, streaks *(Premium)*. |
+| **Plugins** | Timeline, Pomodoro, bottom bar and review messages, deck card layout. |
+| **Appearance** | Theme gallery (2 free, 13 Premium presets), card styling, custom deck icons (free unlock button available), deck and status colors *(Premium)*, completion effect and Gamify mode *(Premium)*. |
+| **Premium** | License code entry and a feature overview. |
 
-<hr>
+## Free vs. Premium
 
-<h3>&#128640; New in v2.4</h3>
+Deckline is free to use for up to **3 deadlines** (or custom Timeline dates) at once, with two built-in themes (dark **Deckline** and light **Deckline Light**). Everything above is included. Premium removes that limit and adds:
 
-<b>Free</b>
-<ul>
-  <li><b>Unlock button</b> — free users can now access custom icon drawing and card blur/opacity controls.</li>
-  <li><b>Reworked Deckline Home</b> — modern web UI with a clear daily plan and 7-day weekly rhythm.</li>
-  <li><b>Quick filtered deck</b> — click <b>NEW</b> or <b>REVIEW</b> on a deck card to instantly create a filtered deck sized to your daily target.</li>
-  <li>Performance and UI tweaks.</li>
-</ul>
+- ♾️ **Unlimited deadlines**
+- 🍅 **Pomodoro timer**, built into the review screen, with break warnings and an off switch
+- 🔥 **Streaks & milestone tracking** for staying consistent
+- 🌴 **Vacation-day planning**, always a full rest day (0% target), to block out longer stretches in advance
+- 🖼️ **Full custom deck icon pack**, plus custom deck and status colors
+- ✍️ **A gallery of premium themes** (13 presets, including **Amethyst** and **Pistachio**), plus full custom color control
+- 🎮 **Gamify mode**: subtle pulses at the 25/50/75% checkpoints, then the review bar resets at your target so you chase bronze (130%), silver (160%) and gold (200%) medals, each with its own color and a live bonus counter. Earn a medal and the On Track pill on your deck list glows to match for the rest of the day, and three Stats milestones track every medal you collect.
+- ✨ **Completion effect** the instant you reach your daily target
+- 📊 **Full deadline projection chart** and an all-decks timeframe view
 
-<b>Premium</b>
-<ul>
-  <li><b>Completion effect</b> — visual effect when you hit your daily target.</li>
-  <li><b>After completed target</b> — control how the review bar behaves once your goal is reached.</li>
-  <li><b>Checkpoints</b> — milestones along the review bar for at-a-glance session progress.</li>
-</ul>
+Free users can also unlock hand-drawn custom icons and card blur/opacity controls (normally Premium-only) by leaving a quick review of Deckline on AnkiWeb. The unlock button is right there in the Appearance settings.
 
-<hr>
+## How targets are calculated
 
-<h3>&#128202; How targets are calculated</h3>
-<ol>
-  <li>Choose the current phase (NEW until cut-off, then REVIEW until deadline).</li>
-  <li>Exclude rest days (skipped weekends, vacation/time-off).</li>
-  <li>Apply the day-off learning amount for partial rest days.</li>
-  <li>Divide remaining work by remaining study days.</li>
-  <li>Compare done today against the quota and assign a status badge.</li>
-</ol>
+1. Determine the current phase (NEW until the cut-off date, then REVIEW until the deadline).
+2. Exclude rest days (skipped weekends, vacation/time-off days).
+3. Apply the day-off learning amount for partial rest days.
+4. Divide the remaining work by the remaining study days.
+5. Compare today's done count against that quota and assign a status pill.
 
-<hr>
+## FAQ
 
-<h3>&#10067; FAQ</h3>
+**Does Deckline modify FSRS or scheduling?**
+No, it only provides planning and feedback on top of your existing scheduling.
 
-<b>Does Deckline modify FSRS or scheduling?</b><br>
-No. It only provides planning and feedback.<br><br>
+**Do subdecks count?**
+Yes, automatically: in targets, progress, and today's counts.
 
-<b>Do subdecks count?</b><br>
-Yes — automatically included in targets, progress, and done-today values.<br><br>
+**Why does today's review count sometimes look lower than what I actually studied?**
+In the REVIEW phase, a card only counts toward today once it reaches the maturity threshold (21 days by default). Cards you're still relearning come back later and don't inflate your progress in the meantime, so the number always reflects real ground gained, not just answered cards.
 
-<b>Why does today show fewer reviews than Anki's raw count?</b><br>
-Deckline counts distinct cards, not revlog actions, so repeated learning steps don't inflate progress.<br><br>
+**My deadline is only two weeks away and I can never fill the review bar. Why?**
+A card only counts once it reaches the maturity threshold, and at 21 days that is physically unreachable inside a two-week window. Open the deck's Deckline settings → *Planning → Mature after* and lower it. Seven days is a good starting point for a cram week. More of your reviews start counting straight away, so the bar becomes reachable again.
 
-<b>Is progress daily or total?</b><br>
-Daily: Overview, review bar, chart details, today counters. Total: Deck Browser progress and deadline projections.
+**Change it at the start of a study day.** That one number sets both sides of the calculation, but the two sides do not land at the same moment: today's *done* is recomputed immediately, while the daily *target* only picks up the new value on your next study day. Deckline deliberately never rewrites a target part-way through a day, so a mid-day change looks like only half of it worked.
 
-<hr>
+*Mature after* is a **beta setting**. It is new, and feedback is very welcome. One more thing worth knowing: raising it never rewrites history, so past days keep the counts they were originally recorded with. Lowering it may raise the counts on past days, since those are recomputed from your review log.
 
-<h3>&#128736;&#65039; Troubleshooting</h3>
-<ul>
-  <li><b>Overview bar missing</b> — check Progress settings → Show daily progress bar in deck overview.</li>
-  <li><b>Review bar missing</b> — check Progress settings → Show daily progress bar in review screen.</li>
-  <li><b>Targets seem off</b> — verify dates, skipped weekends, vacation days, day-off learning amount, and expected total cards.</li>
-  <li><b>Pomodoro unavailable</b> — requires Premium, must be enabled in Plugins settings.</li>
-</ul>
+**Is progress shown daily or as a total?**
+Both: the Deck Overview, review bar and today counters are daily. The Deck Browser progress bar and deadline projections are cumulative.
 
-<hr>
+## Troubleshooting
 
-<h3>&#129529; Managing plans</h3>
-<ul>
-  <li><b>Edit:</b> right-click deck → Deadline.</li>
-  <li><b>Complete:</b> use Deckline's completion flow when a deadline is finished.</li>
-  <li><b>Archive:</b> move completed plans to the metrics archive.</li>
-  <li><b>Clear:</b> right-click deck → Clear.</li>
-</ul>
+- **Overview progress bar missing**: check *Progress* settings → "Show daily progress bar in deck overview".
+- **Review progress bar missing**: check *Progress* settings → "Show daily progress bar in review screen".
+- **Targets seem off**: double-check the deadline dates, skipped weekends/vacation days, the day-off learning amount, and expected total cards.
+- **Pomodoro unavailable**: it's a Premium feature and must be enabled in *Plugins* settings.
 
-<hr>
+## Managing your plans
 
-<h3>&#128204; Quick tips</h3>
-<ul>
-  <li>Set the cut-off a few days before the final deadline.</li>
-  <li>Use expected total cards for growing decks.</li>
-  <li>Use Timeline for cross-deck planning and exam dates.</li>
-  <li>Check Deckline Home before you start reviewing.</li>
-  <li>Use the review bar as your done-for-today indicator.</li>
-</ul>
+- **Edit**: right-click a deck → **Deadline**.
+- **Complete**: use Deckline's completion flow once a deadline is finished.
+- **Archive**: move completed plans into the stats archive automatically.
+- **Clear**: right-click a deck → **Clear**.
 
-<hr>
+## Quick tips
 
-<p>Found a bug or mistake? Please <a href="https://github.com/Kwinties/Deckline/issues">open an issue on GitHub</a>.</p>
+- Set the cut-off a few days before the final deadline to leave breathing room.
+- Use "expected total cards" for decks that are still growing.
+- Use Timeline for cross-deck planning around exam dates.
+- Check Deckline Home before you start reviewing to see the day's plan at a glance.
+- Use the review bar as your done-for-today indicator while studying.
+
+---
+
+Found a bug or have an idea? [Open an issue on GitHub](https://github.com/Kwinties/Deckline/issues).
+
+If Deckline helps you stay on track, consider [supporting development on Ko-fi](https://ko-fi.com/s/d708f4b514).
