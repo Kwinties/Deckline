@@ -8,6 +8,8 @@
 [![GitHub Issues](https://img.shields.io/badge/GitHub-Issues-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Kwinties/Deckline/issues)
 [![Support on Ko-fi](https://img.shields.io/badge/Support-Ko--fi-FF5A5F?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/s/d708f4b514)
 
+![Deckline in a modern Anki](deckline_hero.gif)
+
 </div>
 
 ---
@@ -26,6 +28,8 @@ Deckline helps you finish Anki decks before a chosen **deadline** by turning the
 - Shows a **live daily pace** while you pick your dates: new cards a day until the cut-off, then reviews a day until the deadline, updating as you type. The same card runs backwards too, turning a pace you choose into the dates that deliver it.
 - **Quests and Worlds** (new in v3.0, free, off by default): every day you hit a deadline's target (10 cards or more) earns a footprint, footprints bring animals to a jungle at the bottom of the deck list, and every deadline is a route of stones on the back of its deck card. Find all eight jungle animals and your footprints take you on to a second world, the Lagoon. See [Quests and Worlds](#quests-and-worlds) below.
 - Builds a **smart filtered deck** with exactly the cards you still need to hit today's target. Click the **NEW** or **REVIEW** phase button on a deck card, or the deck's name once that deck exists. If you run low before reaching today's target, an **Add** button appears next to *More* in the reviewer to top the deck back up with one click.
+- **Modernise** (new in v3.1): turns Anki's bars, the deck list and the review screen into frosted glass, over a photo you pick. See [Modernise](#modernise) below.
+- **AI study panel** (new in v3.1, free, off by default): Claude, ChatGPT, Gemini or Perplexity in a panel beside your card. See [AI study panel](#ai-study-panel) below.
 
 ## What Deckline does *not* do
 
@@ -59,7 +63,8 @@ Deckline helps you finish Anki decks before a chosen **deadline** by turning the
 | **Topbar** | Focus mode, sort options, a "behind only" filter, and the Timeline / Pomodoro panels. |
 | **Main-screen bottom bar** | Smart messages and curated study facts (can be hidden in settings). |
 | **Deck Overview** | Today's progress as *done / target*, with phase and rest-day context. |
-| **Review screen** | A progress bar that updates live while you review, plus (Premium) a completion effect and Overdrive, and (free) the Add button on your quick filtered decks. |
+| **Review screen** | A progress bar that updates live while you review, with a completion effect and the Add button on your quick filtered decks, plus Overdrive and checkpoints *(Premium)*. |
+| **Anki's own screens** | With **Modern** on: glass bars, a glass deck list and your photo behind it all. With the AI study panel on: an AI button in the top bar. |
 
 ## Quests and Worlds
 
@@ -79,13 +84,39 @@ The **Quests** window (from the world card or the *Quests* tab in the topbar) ha
 
 **Premium adds** coins for your best Overdrive medal each day, a golden chest beside every wooden one, four more explorers, and the items and the ninth animal that finish both worlds (a waterfall, a red flower, lanterns and fireflies in the jungle; glass floats, glowing plankton, a sea anemone and a shipwreck in the lagoon). Everything else in Quests and Worlds is free.
 
+## Modernise
+
+![Make Anki yours](deckline_modern.png)
+
+New in v3.1, on the **Modernise** page of the settings.
+
+- **Classic or Modern**: Classic is Anki's own look. Modern turns the top and bottom bars, the deck list, the Deckline column and the review bar into one frosted glass, with Deckline beside or below your decks. Modern is free with a quick review on AnkiWeb: click its picture on the Modernise page.
+- **Glass**: three sliders set how solid, how frosted and how coloured the glass is.
+- **A photo behind Anki**: eight photos are free and work on Classic too. Set how strongly the photo shows while you review. Premium adds your own photo, its strength on the main screens, and its focus and zoom.
+- **Themes**: Deckline and Deckline Light are free. Click any of the 13 Premium themes on the **Theme** page to try it on.
+- **Flashcards as glass** *(Premium)*: your cards in the colours of your theme, with sliders for See-through, Frost and Tint. Nothing is written to your note types, so switching it off gives you your own cards back.
+
+Deckline leaves Anki's screens alone when Onigiri is installed, because Onigiri draws its own.
+
+## AI study panel
+
+![Ask AI about a card](deckline_ai.png)
+
+New in v3.1, free. Switch it on under *Plugins → AI study panel* and an AI button appears in Anki's top bar.
+
+- **Pick your AI**: Claude, ChatGPT, Gemini, Perplexity, or an https address of your own. You sign in yourself, on the AI's own site, and the sign-in stays on your computer.
+- **Paste card** puts the card you are reviewing in the chat field, with your own prompt. Nothing is sent until you press Enter.
+- **Yours to arrange**: drag the panel as wide as you like, set a start page per AI, or open the page in your own browser.
+
+Deckline runs no script in the AI's page and never reads your chats. If a service refuses to sign in inside the panel, use **Open in browser**.
+
 ## Stats window
 
 Open it from the stats button in the topbar:
 
 - **Home**: daily plan and 7-day weekly rhythm.
 - **Metrics**: deadline activity and progress patterns across all your decks.
-- **Chart**: recent done-vs-target per deck, with earned Overdrive medals and Quests footprints shown right on the bars (Premium adds an all-decks timeframe and a full deadline projection).
+- **Chart**: done vs target for the last 7 days, with earned Overdrive medals and Quests footprints right on the bars. Premium adds 30 days, all time and every day ahead to your deadline.
 - **Heatmap**: per-deck study-day history, colored by progress against your daily targets.
 - **Milestones**: rewards for consistency, plus a Quests block with Quests and Worlds on. Purely cosmetic, never affecting scheduling.
 - **Archive**: completed deadlines with their full history, and a postcard for each one finished with Quests and Worlds on.
@@ -93,7 +124,7 @@ Open it from the stats button in the topbar:
 ## Timeline & Pomodoro
 
 - **Timeline** shows all your deadlines, cut-off dates, and custom dates (exams, trips, milestones) in one range view.
-- **Pomodoro** *(Premium)* adds a focus/break timer with review-screen timing feedback, configurable break warnings, an end-of-session chime (testable, and can be switched off), a button to skip a break early, and the option to turn Pomodoro off entirely.
+- **Pomodoro** is a focus/break timer on a 25/5 rhythm, with a countdown on the review screen, an end-of-session chime (testable, and can be switched off) and a button to skip a break early. Premium adds your own lengths and long breaks, a warning before the end and auto-start.
 
 ## Settings
 
@@ -103,28 +134,26 @@ Per deck: right-click a deck → **Deadline**. Global: **Tools → Deckline sett
 | --- | --- |
 | **Schedule** | Deck name, start date, cut-off date, deadline, and the **Daily pace** card. |
 | **Planning** | Expected total cards, daily target counting mode, daily target override, day rollover, days off, time off (vacation days). |
-| **Progress** | Progress bar visibility, time-estimate multipliers, streaks *(Premium)*. |
+| **Progress** | Progress bar visibility, smart hints on deck cards, the review bar with its completion effect and checkpoints *(Premium)*, streaks, time-estimate multipliers. |
 | **Gamify** | Quests and Worlds, and Overdrive *(Premium)*. |
-| **Plugins** | Timeline, Pomodoro, bottom bar and review messages, deck card layout. |
-| **Appearance** | Theme gallery (2 free, 13 Premium presets), card styling, custom deck icons (free unlock button available), deck and status colors *(Premium)*, completion effect *(Premium)*. |
-| **Premium** | License code entry and a feature overview. |
+| **Plugins** | Timeline, Pomodoro (your own rhythm *Premium*), the AI study panel, bottom bar and review messages. |
+| **Theme** | Theme gallery (2 free, 13 Premium presets you can try on), the Deadline card (accents, every icon, the bar checkpoint, a deck's own colour *(Premium)*), your own colors *(Premium)*. |
+| **Modernise** | Classic or Modern (free with a quick review): one glass for Anki's bars, the deck list and Deckline, with Deckline beside or below your decks, and how see-through, frosted and coloured it is; flashcards as glass *(Premium)*; a photo behind Anki (8 free, your own *Premium*). |
+| **Premium** | License code entry, and Free and Premium side by side. |
 
 ## Free vs. Premium
 
-Deckline is free to use for up to **3 deadlines** (or custom Timeline dates) at once, with two built-in themes (dark **Deckline** and light **Deckline Light**). Everything above is included, and so is the whole Planning page, time off (vacation days) too: always a full rest day (0% target), to block out longer stretches in advance. Premium removes that limit and adds:
+Free covers everything to plan, study and stay on track. Premium is **€5 once**, no subscription, and adds more, deeper and your own style. The same list is on the Premium page in the settings.
 
-- ♾️ **Unlimited deadlines**
-- 🍅 **Pomodoro timer**, built into the review screen, with break warnings, an end-of-session chime, a skip-break button, and an off switch
-- 🔥 **Streaks & milestone tracking** for staying consistent
-- 🖼️ **Full custom deck icon pack**, plus custom deck and status colors
-- ✍️ **A gallery of premium themes** (13 presets, including **Amethyst** and **Pistachio**), plus full custom color control
-- 🎯 **Adjustable review bar checkpoints** (1-8, default 3): subtle pulses as you approach today's target, shown for any Premium account whether or not Overdrive is on.
-- 🎮 **Overdrive**: once you hit today's target, the review bar resets so you chase bronze (130%), silver (160%) and gold (200%) medals, each with its own color and a live bonus counter. Earn a medal and the On Track pill on your deck list glows to match for the rest of the day, three Stats milestones track every medal you collect, and earned medals now show up right on the stats Chart.
-- 🌴 **More for Quests and Worlds**: medals pay coins, a golden chest beside every wooden one on your routes, four more explorers, and the items and the ninth animal that finish both worlds
-- ✨ **Completion effect** the instant you reach your daily target
-- 📊 **Full deadline projection chart** and an all-decks timeframe view
+| | Free | Premium adds |
+| --- | --- | --- |
+| **More** | Up to 3 deadlines at once (custom Timeline dates count) | Unlimited deadlines |
+| **Deeper** | The chart for the last 7 days; Pomodoro on a 25/5 rhythm; Quests and Worlds, both worlds; streaks; the completion effect | The full chart, with the road to your deadline; Overdrive: medals past your target; Medal coins and golden chests; Pomodoro in your own rhythm |
+| **Your style** | The Deckline and Deckline Light themes; eight background photos; every deck icon, and accents per deadline | 13 more themes; Your own colors, for each deck too; Your own background photo; Flashcards as frosted glass; Four explorers, every world finished |
 
-Free users can also unlock hand-drawn custom icons and card blur/opacity controls (normally Premium-only) by leaving a quick review of Deckline on AnkiWeb. The unlock button is right there in the Appearance settings.
+**Free with a review: Modern.** Leave a quick review on AnkiWeb and Modern is yours: glass across Anki, with its opacity, blur and color. Click the Modern picture on the Modernise page.
+
+Everything you had stays: a lapsed licence keeps your Premium settings stored for when it comes back, and nothing that is free will ever become Premium.
 
 ## How targets are calculated
 
@@ -180,7 +209,7 @@ Both: the Deck Overview, review bar and today counters are daily. The Deck Brows
 - **Overview progress bar missing**: check *Progress* settings → "Show daily progress bar in deck overview".
 - **Review progress bar missing**: check *Progress* settings → "Show daily progress bar in review screen".
 - **Targets seem off**: double-check the deadline dates, skipped weekends/vacation days, the day-off learning amount, and expected total cards.
-- **Pomodoro unavailable**: it's a Premium feature and must be enabled in *Plugins* settings.
+- **Pomodoro not showing**: switch it on under *Plugins → Pomodoro* in the settings.
 
 ## Managing your plans
 
